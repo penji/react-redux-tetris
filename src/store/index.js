@@ -1,7 +1,14 @@
 import { createStore } from 'redux';
-import devToolsEnhancer from 'remote-redux-devtools';
 import reducer from '../reducer/index';
 
-const store = createStore(reducer, devToolsEnhancer());
+const store = createStore(
+    reducer,
+    /* preloadedState, */
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+/*store.subscribe(() => {
+  console.dir(store.getState());
+});*/
 
 export default store;
