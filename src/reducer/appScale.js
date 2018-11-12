@@ -21,7 +21,7 @@ const reducer = (state, action) => {
   return newScale;
 };
 
-export const changeAppScale = handleAction(
+export const appScale = handleAction(
     CHANGE_APP_SCALE,
     reducer,
     reducer(undefined, aChangeAppScale())

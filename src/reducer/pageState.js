@@ -6,7 +6,7 @@ import {
 
 const { state } = lifecycle;
 
-export const changePageLifecycleState = handleAction(
+export const pageState = handleAction(
     CHANGE_PAGE_LIFECYCLE_STATE,
     (state, action) => ({
       old: action.payload.oldState,
