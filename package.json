@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "immutability-helper": "^2.8.1",
     "page-lifecycle": "^0.1.1",
     "prop-types": "^15.6.2",
     "react": "^16.6.1",
