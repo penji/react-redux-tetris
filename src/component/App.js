@@ -6,8 +6,6 @@ import './App.css';
 import {changeAppScale} from '../action/changeAppScale';
 import {changePageLifecycleState} from '../action/changePageLifecycleState';
 
-window.addEventListener("resize", () => console.error('resizeEvent'));
-
 class App extends Component {
 
   componentDidMount() {
@@ -35,7 +33,6 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-  console.error('state', state);
   return {
     global: {
       appScale: `scale(${state.global.appScale})`,
