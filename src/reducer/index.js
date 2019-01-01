@@ -1,12 +1,6 @@
 import { combineReducers } from 'redux';
-import { appScale } from './appScale';
-import { pageState} from './pageState';
-
-const global = combineReducers({
-  appScale,
-  pageState,
-});
+import { pageState } from './pageState';
 
 export default combineReducers({
-  global
+  pageState,
 });
