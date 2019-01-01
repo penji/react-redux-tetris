@@ -1,16 +1,17 @@
 import lifecycle from 'page-lifecycle/dist/lifecycle.es5';
 import { handleAction } from 'redux-actions';
+import {makeCombineActionType} from '../util/util';
 import {
-  CHANGE_PAGE_LIFECYCLE_STATE,
-} from '../action/changePageLifecycleState';
+  pageStateAction,
+} from '../action/pageState';
 
 const { state } = lifecycle;
 
 export const pageState = handleAction(
-    CHANGE_PAGE_LIFECYCLE_STATE,
+    [makeCombineActionType(pageStateAction)],
     (state, action) => ({
-      old: action.payload.oldState,
-      now: action.payload.newState,
+      old: state.now,
+      now: action.payload,
     }),
     {
       old: state,
