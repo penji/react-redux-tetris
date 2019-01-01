@@ -8,7 +8,7 @@ import {
 const { state } = lifecycle;
 
 export const pageState = handleAction(
-    [makeCombineActionType(pageStateAction)],
+    makeCombineActionType(pageStateAction),
     (state, action) => ({
       old: state.now,
       now: action.payload,
