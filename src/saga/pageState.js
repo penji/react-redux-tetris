@@ -6,7 +6,6 @@ import {pageStateAction} from '../action/pageState';
 
 const takeEventNames = ['active', 'passive', 'hidden'];
 
-console.error(pageStateAction);
 const makelifeCycleChannel = () => eventChannel(emit => {
   const handler = event => {
     if (takeEventNames.includes(event.newState)) {
