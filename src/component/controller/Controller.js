@@ -1,47 +1,48 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import './Controller.css';
-import Button from './Button';
+import {Up, Left, Right, Down, Space} from './buttons';
 
-const BUTTONS = ['UP', 'DOWN', 'LEFT', 'RIGHT', 'SPACE'];
+import styled from 'styled-components';
 
-export default class Controller extends Component {
-  componentDidMount() {
+const StyledDiv = styled.div`
+  position: absolute;
+  box-sizing: border-box;
+  background-color: blue;
+  width: 320px;
+  height: 160px;
+  padding: 5px;
+  bottom: 0px;
+`;
 
-  };
-
-  componentWillUnmount() {
-
-  };
-
-  componentDidUpdate(prevProps,/*prevState, snapshot*/) {
-
-  }
-
-  render() {
-    return (
-        <div className="controller">
-          {BUTTONS.map((type, index) => {
-            if (type === this.props.button) {
-              return <Button
-                  key={index}
-                  type={type}
-                  pressed={this.props.pressed}
-                  onMouseTouchEvent={this.props.changeButtonState}
-              />;
-            } else {
-              return <Button
-                  key={index}
-                  type={type}
-                  pressed={false}
-                  onMouseTouchEvent={this.props.changeButtonState}
-              />;
-            }
-          })}
-        </div>
-    );
-  }
-}
+let Controller = ({button, pressed, changeButtonState}) => (
+    <StyledDiv>
+      <Up
+          type={'UP'}
+          pressed={button === 'UP' && pressed}
+          onMouseTouchEvent={changeButtonState}
+      />
+      <Down
+          type={'DOWN'}
+          pressed={button === 'DOWN' && pressed}
+          onMouseTouchEvent={changeButtonState}
+      />
+      <Left
+          type={'LEFT'}
+          pressed={button === 'LEFT' && pressed}
+          onMouseTouchEvent={changeButtonState}
+      />
+      <Right
+          type={'RIGHT'}
+          pressed={button === 'RIGHT' && pressed}
+          onMouseTouchEvent={changeButtonState}
+      />
+      <Space
+          type={'SPACE'}
+          pressed={button === 'SPACE' && pressed}
+          onMouseTouchEvent={changeButtonState}
+      />
+    </StyledDiv>
+);
 
 const mapStateToProps = state => state.controller;
 
@@ -53,3 +54,5 @@ const mapDispatchToProps = dispatch => ({
 });
 
 Controller = connect(mapStateToProps, mapDispatchToProps)(Controller);
+
+export default Controller;

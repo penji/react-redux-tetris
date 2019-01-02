@@ -1,9 +1,0 @@
-.controller {
-    position: absolute;
-    box-sizing: border-box;
-    background-color: blue;
-    width: 320px;
-    height: 160px;
-    padding: 5px;
-    bottom: 0px;
-}
