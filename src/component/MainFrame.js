@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import Controller from './controller/Controller';
+
 const Scalable = styled.div`
   position: absolute;
   background: black;
@@ -75,7 +77,7 @@ export default class MainFrame extends Component {
           frameHeight={BASE_SIZE.height}
           frameScale={this.state.scale}
         >
-
+          <Controller/>
         </Scalable>
     );
   }
