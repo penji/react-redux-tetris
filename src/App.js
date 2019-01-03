@@ -1,8 +1,12 @@
 import React from 'react';
 import MainFrame from './component/MainFrame';
+import GlobalStyle from './GlobalStyle';
 
 const App = () => (
-    <MainFrame/>
+    <React.Fragment>
+      <MainFrame/>
+      <GlobalStyle />
+    </React.Fragment>
 );
 
 export default App;
