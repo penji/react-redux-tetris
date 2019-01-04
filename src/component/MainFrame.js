@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import Controller from './controller/Controller';
+import BlockBoard from './blockboard/BlockBoard';
 
 const Scalable = styled.div`
   position: absolute;
@@ -77,6 +78,7 @@ export default class MainFrame extends Component {
           frameHeight={BASE_SIZE.height}
           frameScale={this.state.scale}
         >
+          <BlockBoard/>
           <Controller/>
         </Scalable>
     );
