@@ -1,115 +1,51 @@
 import React from 'react';
-import {Title, Value} from './components';
+import {Title} from './components';
 import styled from 'styled-components';
 
-import {X, I, O, T, J, L, S, Z} from '../block/Cell';
+import {Block} from '../block/Block';
 import {connect} from 'react-redux';
 
 const Div = styled.div`
   background: yellow;
-  height: 100px;
+  height: 184px;
 `;
 
 const Board = styled.div`
   position: relative;
   width: 75px;
-  height: 30px;
-  top: 30px;
+  height: 150px;
+  top: 7.5px;
   left: 22.5px;
   background-color: grey;
 `;
 
-const Row = styled.div`
-  width: 75px;
-  height: 15px;
-  line-height: 0px;
-`;
-
-const boardMap = {
-  'X': (<React.Fragment>
-          <Row>
-            <X/><X/><X/><X/><X/>
-          </Row>
-          <Row>
-            <X/><X/><X/><X/><X/>
-          </Row>
-      </React.Fragment>),
-
-  'I': (<React.Fragment>
-    <Row>
-      <X/><X/><X/><X/><X/>
-    </Row>
-    <Row>
-      <I/><I/><I/><I/><X/>
-    </Row>
-  </React.Fragment>),
-
-  'O': (<React.Fragment>
-    <Row>
-      <X/><O/><O/><X/><X/>
-    </Row>
-    <Row>
-      <X/><O/><O/><X/><X/>
-    </Row>
-  </React.Fragment>),
-
-  'T': (<React.Fragment>
-    <Row>
-      <X/><X/><T/><X/><X/>
-    </Row>
-    <Row>
-      <X/><T/><T/><T/><X/>
-    </Row>
-  </React.Fragment>),
-
-  'J': (<React.Fragment>
-    <Row>
-      <X/><X/><X/><J/><X/>
-    </Row>
-    <Row>
-      <X/><J/><J/><J/><X/>
-    </Row>
-  </React.Fragment>),
-
-  'L': (<React.Fragment>
-    <Row>
-      <X/><L/><X/><X/><X/>
-    </Row>
-    <Row>
-      <X/><L/><L/><L/><X/>
-    </Row>
-  </React.Fragment>),
-
-  'S': (<React.Fragment>
-    <Row>
-      <X/><X/><S/><S/><X/>
-    </Row>
-    <Row>
-      <X/><S/><S/><X/><X/>
-    </Row>
-  </React.Fragment>),
-
-  'Z': (<React.Fragment>
-    <Row>
-      <X/><Z/><Z/><X/><X/>
-    </Row>
-    <Row>
-      <X/><X/><Z/><Z/><X/>
-    </Row>
-  </React.Fragment>),
-};
-
 const NextBlock = connect(
-    ({info}) => ({type: info.next})
+    ({block}) => ({next: block.next})
 )(
-    ({type}) => (
-        <Div>
-          <Title>NEXT</Title>
-          <Board>
-            {boardMap[type]}
-          </Board>
-        </Div>
-    )
+    ({next}) => {
+      const nextArr = next.slice(0, 3);
+
+      return (
+          <Div>
+            <Title>NEXT</Title>
+            <Board>
+              <table style={{width:'100%', height:'100%'}}>
+                <tbody>
+                {
+                  nextArr.map(({type}, i) => (
+                      <tr>
+                        <td>
+                          <Block key={i} type={type}/>
+                        </td>
+                      </tr>
+                  ))
+                }
+                </tbody>
+              </table>
+            </Board>
+          </Div>
+      )
+    }
 );
 
 export default NextBlock;

@@ -26,7 +26,7 @@ export const Title = styled(Label)`
 export const Div = styled.div`
   background: yellow;
   height: 32px;
-  margin-bottom: 28px;
+  margin-bottom: 0px;
 `;
 
 export const Info = props => (

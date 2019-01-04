@@ -5,7 +5,6 @@ import {
   LAST_SCORE,
   NOW_SCORE,
   SPEED,
-  NEXT
 } from '../action/info';
 
 export const info = handleActions(
@@ -26,16 +25,11 @@ export const info = handleActions(
           update(state, {
             speed: {$set: payload}
           }),
-      [NEXT]: (state, {payload}) =>
-          update(state, {
-            NEXT: {$set: payload}
-          }),
     },
     {
       highScore: 0,
       lastScore: 0,
       nowScore: 0,
       speed: 1,
-      next: 'X'
     }
 );
