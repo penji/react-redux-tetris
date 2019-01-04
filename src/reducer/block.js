@@ -6,14 +6,13 @@ import {
   RIGHT,
   ROTATE,
   DROP,
-  NEXT,
+  PUSH_NEXT,
+  SHIFT_NEXT,
   ROW_CLEAR,
   CLEAR,
   blockAction,
 } from '../action/block';
-import Tetromino from '../model/Tetromino';
-
-const BLOCK = {I:'I', O:'O', T:'T', J:'J', L:'L', S:'S', Z:'Z', X:'X', D:'D'};
+import {Tetromino, BLOCK} from '../model/Tetromino';
 const {down, left, right, rotate} = blockAction;
 
 const getClearBoard = (defaultValue = BLOCK.X) => {
@@ -51,10 +50,12 @@ const defaultState = {
     [RIGHT]: false,
     [ROTATE]: false
   },
-  next: {
-    type: null,
-    rotate: null,
-  },
+  next: [
+    /*{
+      type: null,
+      rotate: null,
+    }*/
+  ],
 };
 
 export const collisionCheck = (state, actionType) => {
@@ -295,22 +296,23 @@ export const block = handleActions(
           }}
       }),
 
-      [NEXT]: (state, {payload}) => {
-        const {type, rotate} = payload;
-        const {next: beforeNext} = state;
+      [PUSH_NEXT]: (state, {payload: {blocks}}) => update(state, {
+        next: {$push: blocks}
+      }),
 
-        const nextCopy = {
-          type: beforeNext.type,
-          rotate: beforeNext.rotate,
+      [SHIFT_NEXT]: state => {
+        const {next: [newBlock]} = state;
+
+        const newNow = {
+          type: newBlock.type,
+          rotate: newBlock.rotate,
           x: null,
           y: null
         };
 
-        const newNext = {type, rotate};
-
         return update(state, {
-          now: {$set: nextCopy},
-          next: {$set: newNext},
+          now: {$set: newNow},
+          next: {$splice: [[0, 1]]},
           checkedCollision: {$set : {
               [LEFT]: false,
               [DOWN]: false,

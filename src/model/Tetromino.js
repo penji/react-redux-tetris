@@ -1,10 +1,17 @@
-const Tetromino = {
-  I: {
+export const BLOCK = {
+  X:'X', D:'D', I:'I', O:'O', T:'T', J:'J', L:'L', S:'S', Z:'Z'
+};
+export const NORMAL_TYPES = [
+    BLOCK.I, BLOCK.O, BLOCK.T, BLOCK.J, BLOCK.L, BLOCK.S, BLOCK.Z,
+];
+
+export const Tetromino = {
+  [BLOCK.I]: {
     maxRotate: 1,
     rotate: {
       0: {
         shape: [
-          ['I','I','I','I']
+          [BLOCK.I,BLOCK.I,BLOCK.I,BLOCK.I]
         ],
         w: 4,
         h: 1,
@@ -13,10 +20,10 @@ const Tetromino = {
       },
       1: {
         shape: [
-          ['I'],
-          ['I'],
-          ['I'],
-          ['I'],
+          [BLOCK.I],
+          [BLOCK.I],
+          [BLOCK.I],
+          [BLOCK.I],
         ],
         w: 1,
         h: 4,
@@ -25,13 +32,13 @@ const Tetromino = {
       }
     }
   },
-  O: {
+  [BLOCK.O]: {
     maxRotate: 0,
     rotate: {
       0: {
         shape: [
-          ['O','O'],
-          ['O','O'],
+          [BLOCK.O,BLOCK.O],
+          [BLOCK.O,BLOCK.O],
         ],
         w: 2,
         h: 2,
@@ -40,13 +47,13 @@ const Tetromino = {
       }
     }
   },
-  T: {
+  [BLOCK.T]: {
     maxRotate: 3,
     rotate: {
       0: {
         shape: [
-          ['X','T','X'],
-          ['T','T','T']
+          [BLOCK.X,BLOCK.T,BLOCK.X],
+          [BLOCK.T,BLOCK.T,BLOCK.T]
         ],
         w: 3,
         h: 2,
@@ -55,9 +62,9 @@ const Tetromino = {
       },
       1: {
         shape: [
-          ['T','X'],
-          ['T','T'],
-          ['T','X']
+          [BLOCK.T,BLOCK.X],
+          [BLOCK.T,BLOCK.T],
+          [BLOCK.T,BLOCK.X]
         ],
         w: 2,
         h: 3,
@@ -66,8 +73,8 @@ const Tetromino = {
       },
       2: {
         shape: [
-          ['T','T','T'],
-          ['X','T','X'],
+          [BLOCK.T,BLOCK.T,BLOCK.T],
+          [BLOCK.X,BLOCK.T,BLOCK.X],
         ],
         w: 3,
         h: 2,
@@ -76,9 +83,9 @@ const Tetromino = {
       },
       3: {
         shape: [
-          ['X','T'],
-          ['T','T'],
-          ['X','T']
+          [BLOCK.X,BLOCK.T],
+          [BLOCK.T,BLOCK.T],
+          [BLOCK.X,BLOCK.T]
         ],
         w: 2,
         h: 3,
@@ -87,13 +94,13 @@ const Tetromino = {
       }
     }
   },
-  J: {
+  [BLOCK.J]: {
     maxRotate: 3,
     rotate: {
       0: {
         shape: [
-          ['J','X','X'],
-          ['J','J','J']
+          [BLOCK.J,BLOCK.X,BLOCK.X],
+          [BLOCK.J,BLOCK.J,BLOCK.J]
         ],
         w: 3,
         h: 2,
@@ -102,9 +109,9 @@ const Tetromino = {
       },
       1: {
         shape: [
-          ['J','J'],
-          ['J','X'],
-          ['J','X']
+          [BLOCK.J,BLOCK.J],
+          [BLOCK.J,BLOCK.X],
+          [BLOCK.J,BLOCK.X]
         ],
         w: 2,
         h: 3,
@@ -113,8 +120,8 @@ const Tetromino = {
       },
       2: {
         shape: [
-          ['J','J','J'],
-          ['X','X','J']
+          [BLOCK.J,BLOCK.J,BLOCK.J],
+          [BLOCK.X,BLOCK.X,BLOCK.J]
         ],
         w: 3,
         h: 2,
@@ -123,9 +130,9 @@ const Tetromino = {
       },
       3: {
         shape: [
-          ['X','J'],
-          ['X','J'],
-          ['J','J']
+          [BLOCK.X,BLOCK.J],
+          [BLOCK.X,BLOCK.J],
+          [BLOCK.J,BLOCK.J]
         ],
         w: 2,
         h: 3,
@@ -134,13 +141,13 @@ const Tetromino = {
       }
     }
   },
-  L: {
+  [BLOCK.L]: {
     maxRotate: 3,
     rotate: {
       0: {
         shape: [
-          ['X','X','L'],
-          ['L','L','L']
+          [BLOCK.X,BLOCK.X,BLOCK.L],
+          [BLOCK.L,BLOCK.L,BLOCK.L]
         ],
         w: 3,
         h: 2,
@@ -149,9 +156,9 @@ const Tetromino = {
       },
       1: {
         shape: [
-          ['L','X'],
-          ['L','X'],
-          ['L','L']
+          [BLOCK.L,BLOCK.X],
+          [BLOCK.L,BLOCK.X],
+          [BLOCK.L,BLOCK.L]
         ],
         w: 2,
         h: 3,
@@ -160,8 +167,8 @@ const Tetromino = {
       },
       2: {
         shape: [
-          ['L','L','L'],
-          ['L','X','X']
+          [BLOCK.L,BLOCK.L,BLOCK.L],
+          [BLOCK.L,BLOCK.X,BLOCK.X]
         ],
         w: 3,
         h: 2,
@@ -170,9 +177,9 @@ const Tetromino = {
       },
       3: {
         shape: [
-          ['L','L'],
-          ['X','L'],
-          ['X','L']
+          [BLOCK.L,BLOCK.L],
+          [BLOCK.X,BLOCK.L],
+          [BLOCK.X,BLOCK.L]
         ],
         w: 2,
         h: 3,
@@ -181,13 +188,13 @@ const Tetromino = {
       }
     }
   },
-  S: {
+  [BLOCK.S]: {
     maxRotate: 1,
     rotate: {
       0: {
         shape: [
-          ['X','S','S'],
-          ['S','S','X']
+          [BLOCK.X,BLOCK.S,BLOCK.S],
+          [BLOCK.S,BLOCK.S,BLOCK.X]
         ],
         w: 3,
         h: 2,
@@ -196,9 +203,9 @@ const Tetromino = {
       },
       1: {
         shape: [
-          ['S','X'],
-          ['S','S'],
-          ['X','S']
+          [BLOCK.S,BLOCK.X],
+          [BLOCK.S,BLOCK.S],
+          [BLOCK.X,BLOCK.S]
         ],
         w: 2,
         h: 3,
@@ -207,13 +214,13 @@ const Tetromino = {
       }
     }
   },
-  Z: {
+  [BLOCK.Z]: {
     maxRotate: 1,
     rotate: {
       0: {
         shape: [
-          ['Z','Z','X'],
-          ['X','Z','Z']
+          [BLOCK.Z,BLOCK.Z,BLOCK.X],
+          [BLOCK.X,BLOCK.Z,BLOCK.Z]
         ],
         w: 3,
         h: 2,
@@ -222,9 +229,9 @@ const Tetromino = {
       },
       1: {
         shape: [
-          ['X','Z'],
-          ['Z','Z'],
-          ['Z','X']
+          [BLOCK.X,BLOCK.Z],
+          [BLOCK.Z,BLOCK.Z],
+          [BLOCK.Z,BLOCK.X]
         ],
         w: 2,
         h: 3,
@@ -234,5 +241,3 @@ const Tetromino = {
     }
   }
 };
-
-export default Tetromino;
