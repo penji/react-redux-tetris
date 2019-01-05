@@ -24,7 +24,6 @@ const NextBlock = connect(
 )(
     ({next}) => {
       const nextArr = next.slice(0, 3);
-
       return (
           <Div>
             <Title>NEXT</Title>
@@ -33,9 +32,9 @@ const NextBlock = connect(
                 <tbody>
                 {
                   nextArr.map(({type}, i) => (
-                      <tr>
+                      <tr key={i}>
                         <td>
-                          <Block key={i} type={type}/>
+                          <Block type={type}/>
                         </td>
                       </tr>
                   ))
