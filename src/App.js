@@ -5,7 +5,7 @@ import GlobalStyle from './GlobalStyle';
 const App = () => (
     <React.Fragment>
       <MainFrame/>
-      <GlobalStyle />
+      {/*<GlobalStyle />*/}
     </React.Fragment>
 );
 
