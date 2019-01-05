@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Controller from './controller/Controller';
 import InfoBoard from './infoboard/InfoBoard';
 import BlockBoard from './blockboard/BlockBoard';
+import StartMessage from './StartMessage';
 
 const Scalable = styled.div`
   position: absolute;
@@ -82,6 +83,7 @@ export default class MainFrame extends Component {
           <InfoBoard/>
           <BlockBoard/>
           <Controller/>
+          <StartMessage/>
         </Scalable>
     );
   }

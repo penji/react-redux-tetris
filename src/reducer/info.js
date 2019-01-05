@@ -5,6 +5,8 @@ import {
   LAST_SCORE,
   NOW_SCORE,
   SPEED,
+  SPEED_UP,
+  SPEED_DOWN
 } from '../action/info';
 
 export const info = handleActions(
@@ -24,6 +26,14 @@ export const info = handleActions(
       [SPEED]: (state, {payload}) =>
           update(state, {
             speed: {$set: payload}
+          }),
+      [SPEED_UP]: state =>
+          update(state, {
+            speed: {$set: state.speed + 1}
+          }),
+      [SPEED_DOWN]: state =>
+          update(state, {
+            speed: {$set: state.speed - 1}
           }),
     },
     {
