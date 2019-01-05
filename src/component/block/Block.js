@@ -10,7 +10,6 @@ const Wrapper = styled.div`
 `;
 const Row = styled.div`
   line-height: 1px;
-  display: inline-block;
 `;
 
 
