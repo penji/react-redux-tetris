@@ -19,10 +19,16 @@ export const info = handleActions(
           update(state, {
             lastScore: {$set: payload}
           }),
-      [NOW_SCORE]: (state, {payload}) =>
-          update(state, {
-            nowScore: {$set: payload}
-          }),
+      [NOW_SCORE]: (state, {payload: {score, highScoreUpdate}}) => {
+        const updateObj = {
+          nowScore: {$set: score}
+        };
+        if (highScoreUpdate && state.highScore < score) {
+          updateObj['highScore'] = {$set: score};
+        }
+
+        return update(state, updateObj);
+      },
       [SPEED]: (state, {payload}) =>
           update(state, {
             speed: {$set: payload}

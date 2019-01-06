@@ -11,7 +11,7 @@ export const SPEED_DOWN = 'INFO/SPEED_DOWN';
 const actionCreator = createActions({
   [HIGH_SCORE]: score => score,
   [LAST_SCORE]: score => score,
-  [NOW_SCORE]: score => score,
+  [NOW_SCORE]: (score, highScoreUpdate = true) => ({score, highScoreUpdate}),
   [SPEED]: speed => speed,
   [SPEED_UP]: undefined,
   [SPEED_DOWN]: undefined,
