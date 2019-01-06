@@ -7,7 +7,7 @@ export const NORMAL_TYPES = [
 
 export const Tetromino = {
   [BLOCK.I]: {
-    maxRotate: 1,
+    maxRotate: 3,
     rotate: {
       0: {
         shape: [
@@ -15,7 +15,7 @@ export const Tetromino = {
         ],
         w: 4,
         h: 1,
-        dx: 1,
+        dx: -1,
         dy: 1
       },
       1: {
@@ -27,9 +27,30 @@ export const Tetromino = {
         ],
         w: 1,
         h: 4,
-        dx: -1,
+        dx: 2,
         dy: -1
-      }
+      },
+      2: {
+        shape: [
+          [BLOCK.I,BLOCK.I,BLOCK.I,BLOCK.I]
+        ],
+        w: 4,
+        h: 1,
+        dx: -2,
+        dy: 2
+      },
+      3: {
+        shape: [
+          [BLOCK.I],
+          [BLOCK.I],
+          [BLOCK.I],
+          [BLOCK.I],
+        ],
+        w: 1,
+        h: 4,
+        dx: 1,
+        dy: -2
+      },
     }
   },
   [BLOCK.O]: {
@@ -57,8 +78,8 @@ export const Tetromino = {
         ],
         w: 3,
         h: 2,
-        dx: 1,
-        dy: 1
+        dx: 0,
+        dy: 0
       },
       1: {
         shape: [
@@ -104,8 +125,8 @@ export const Tetromino = {
         ],
         w: 3,
         h: 2,
-        dx: 1,
-        dy: 1
+        dx: 0,
+        dy: 0
       },
       1: {
         shape: [
@@ -115,7 +136,7 @@ export const Tetromino = {
         ],
         w: 2,
         h: 3,
-        dx: -1,
+        dx: 1,
         dy: 0
       },
       2: {
@@ -125,8 +146,8 @@ export const Tetromino = {
         ],
         w: 3,
         h: 2,
-        dx: 0,
-        dy: 0
+        dx: -1,
+        dy: 1
       },
       3: {
         shape: [
@@ -151,8 +172,8 @@ export const Tetromino = {
         ],
         w: 3,
         h: 2,
-        dx: 1,
-        dy: 1
+        dx: 0,
+        dy: 0
       },
       1: {
         shape: [
@@ -162,7 +183,7 @@ export const Tetromino = {
         ],
         w: 2,
         h: 3,
-        dx: -1,
+        dx: 1,
         dy: 0
       },
       2: {
@@ -172,8 +193,8 @@ export const Tetromino = {
         ],
         w: 3,
         h: 2,
-        dx: 0,
-        dy: 0
+        dx: -1,
+        dy: 1
       },
       3: {
         shape: [
@@ -189,7 +210,7 @@ export const Tetromino = {
     }
   },
   [BLOCK.S]: {
-    maxRotate: 1,
+    maxRotate: 3,
     rotate: {
       0: {
         shape: [
@@ -199,9 +220,30 @@ export const Tetromino = {
         w: 3,
         h: 2,
         dx: 0,
-        dy: 1
+        dy: 0
       },
       1: {
+        shape: [
+          [BLOCK.S,BLOCK.X],
+          [BLOCK.S,BLOCK.S],
+          [BLOCK.X,BLOCK.S]
+        ],
+        w: 2,
+        h: 3,
+        dx: 1,
+        dy: 0
+      },
+      2: {
+        shape: [
+          [BLOCK.X,BLOCK.S,BLOCK.S],
+          [BLOCK.S,BLOCK.S,BLOCK.X]
+        ],
+        w: 3,
+        h: 2,
+        dx: -1,
+        dy: 1
+      },
+      3: {
         shape: [
           [BLOCK.S,BLOCK.X],
           [BLOCK.S,BLOCK.S],
@@ -215,7 +257,7 @@ export const Tetromino = {
     }
   },
   [BLOCK.Z]: {
-    maxRotate: 1,
+    maxRotate: 3,
     rotate: {
       0: {
         shape: [
@@ -224,8 +266,8 @@ export const Tetromino = {
         ],
         w: 3,
         h: 2,
-        dx: 1,
-        dy: 1
+        dx: 0,
+        dy: 0
       },
       1: {
         shape: [
@@ -235,9 +277,30 @@ export const Tetromino = {
         ],
         w: 2,
         h: 3,
+        dx: 1,
+        dy: 0
+      },
+      2: {
+        shape: [
+          [BLOCK.Z,BLOCK.Z,BLOCK.X],
+          [BLOCK.X,BLOCK.Z,BLOCK.Z]
+        ],
+        w: 3,
+        h: 2,
         dx: -1,
+        dy: 1
+      },
+      3: {
+        shape: [
+          [BLOCK.X,BLOCK.Z],
+          [BLOCK.Z,BLOCK.Z],
+          [BLOCK.Z,BLOCK.X]
+        ],
+        w: 2,
+        h: 3,
+        dx: 0,
         dy: -1
-      }
+      },
     }
   }
 };
