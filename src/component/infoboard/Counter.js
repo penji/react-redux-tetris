@@ -88,16 +88,22 @@ export default class Counter extends Component {
       const {now} = this.state;
       this.tickCount++;
 
+      const newState = {
+        ...this.state,
+      };
+
       if (this.tickCount === Counter.tick) {
         next = value;
+        newState.begin = value;
       } else {
         next = now + _delta;
       }
 
-      this.setState({
-        ...this.state,
-        now: next,
-      });
+      newState.now = next;
+
+
+
+      this.setState(newState);
 
     }, Counter.period);
   }
