@@ -14,7 +14,7 @@ const KEYCODE_BUTTON_MAP = {
 const makeKeyboardChannel = () => eventChannel(emit => {
 
   let throttled = false;
-  let throttleDelay = 200;
+  let throttleDelay = 20;
 
   const handler = e => {
     if (e.type === 'keydown') {
