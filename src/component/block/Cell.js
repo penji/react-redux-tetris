@@ -20,4 +20,14 @@ export const Cell = styled.div`
   background-color: ${props => mapTypeToColor[props.type]};
 `;
 
+/*
+export const BorderCell = styled.div`
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 0.5px solid black;
+  box-sizing: border-box;
+  background-color: ${props => mapTypeToColor[props.type]};
+`;
+*/
 
