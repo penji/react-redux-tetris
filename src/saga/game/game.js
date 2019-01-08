@@ -7,6 +7,9 @@ import {
 } from '../../action/game';
 
 import {infoAction} from '../../action/info';
+import {blockAction} from '../../action/block';
+
+import playing from './playing';
 
 function* onReady() {
   yield all([
@@ -23,7 +26,6 @@ function* onReady() {
         }
       }),
       yield take('SPACE_TRUE', function* () {
-        console.error('space');
       })
   ]);
 
@@ -32,7 +34,19 @@ function* onReady() {
 }
 
 function* onGame() {
-  console.error('game start');
+  yield call(initialize);
+  yield call(playing);
+  yield call(end);
+}
+
+function* initialize() {
+  yield put(infoAction.nowScore(0, false));
+  yield put(blockAction.clear());
+  yield put(blockAction.pushNext());
+}
+
+function* end() {
+  yield put(gameAction.ready());
 }
 
 export default function* () {
