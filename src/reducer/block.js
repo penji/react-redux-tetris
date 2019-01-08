@@ -8,18 +8,20 @@ import {
   DROP,
   PUSH_NEXT,
   SHIFT_NEXT,
+  COMMIT,
   ROW_CLEAR,
   CLEAR,
   blockAction,
 } from '../action/block';
 import {Tetromino, BLOCK} from '../model/Tetromino';
-const {down, left, right, rotate} = blockAction;
+const {down, left, right} = blockAction;
 
 const getClearBoard = (defaultValue = BLOCK.X) => {
   const t = [];
   for (let y = 0; y < 20; y++) {
     t.push(new Array(10).fill(defaultValue));
   }
+
   return t;
 };
 
@@ -44,7 +46,13 @@ const defaultState = {
     x: null,
     y: null,
   },
-  checkedCollision: {
+  committed: {
+    type: null,
+    rotate: null,
+    x: null,
+    y: null,
+  },
+  cachedCollisionCheck: {
     [LEFT]: false,
     [DOWN]: false,
     [RIGHT]: false,
@@ -59,10 +67,6 @@ const defaultState = {
 };
 
 export const collisionCheck = (state, actionType) => {
-  if (actionType === ROTATE) {
-    return rotateCollisionCheck(state);
-  }
-
   const {now : {type, rotate, x, y}, board} = state;
   const {shape, w, h} = Tetromino[type].rotate[rotate];
 
@@ -115,6 +119,11 @@ export const collisionCheck = (state, actionType) => {
         continue;
       }
 
+      // 충돌 검사하려는 셀이 화면 상단이면 통과
+      if (y + iy + dy < 0) {
+        continue;
+      }
+
       // 충돌 검사하려는 셀이 비어있다면 통과
       if (board[y + iy + dy][x + jx + dx] === BLOCK.X) {
         continue;
@@ -140,12 +149,25 @@ export const rotateCollisionCheck = state => {
       boardWidth = board[0].length,
       boardHeight = board.length;
 
-  let cx = x + dx,
-      cy = y + dy;
+  let newDx, newDy;
 
-  cx = cx < 0 ? 0 : (cx + w - 1) >= boardWidth ? boardWidth - w : cx;
-  cy = cy + h >= boardHeight ? boardHeight - h : cy;
+  if (x + dx < 0) {
+    newDx = -x;
+  } else if ((x + dx + w - 1) >= boardWidth) {
+    newDx = boardWidth - w - x;
+  } else {
+    newDx = dx;
+  }
+
+  if ((y + dy + h) >= boardHeight) {
+    newDy = boardHeight - h - y;
+  } else {
+    newDy = dy;
+  }
+
   // cx, cy = 최종 보정 된 rotate 후 새 블록 위치
+  let cx = x + newDx,
+      cy = y + newDy;
 
   //board의 rotate 전 내 블록 셀을 isBefore에 모두 기록
   const {
@@ -171,6 +193,11 @@ export const rotateCollisionCheck = state => {
         continue;
       }
 
+      // 충돌 검사하려는 셀이 화면 상단이면 통과
+      if (iy + cy < 0) {
+        continue;
+      }
+
       // rotate 시킬 셀이 비었으면 통과
       if (board[iy + cy][jx + cx] === BLOCK.X) {
         continue;
@@ -181,12 +208,17 @@ export const rotateCollisionCheck = state => {
         continue;
       } else {
         // 다른 block과의 충돌 확인됨
-        return false;
+        return {result: false}
       }
     }
   }
   // 회전할 방향의 모든 셀에서 충돌 확인 안됨. 이동 가능
-  return true;
+  return {
+    result: true,
+    dx: newDx,
+    dy: newDy,
+    rotate: nextRotate
+  }
 };
 
 export const getDropPositionY = state => {
@@ -210,6 +242,11 @@ export const getDropPositionY = state => {
             iy + k < h
             && shape[iy + k][jx] === type
         ) {
+          continue;
+        }
+
+        // 충돌 검사하려는 셀이 화면 상단이면 통과
+        if (y + iy + k < 0) {
           continue;
         }
 
@@ -237,58 +274,86 @@ export const getDropPositionY = state => {
 export const block = handleActions(
     {
 
-      [combineActions(down, left, right, rotate)]: (state, {type}) => {
-        if (state.checkedCollision[type]) {
+      [combineActions(down, left, right)]:
+          (state, {type: actionType}) => {
+            if (state.cachedCollisionCheck[actionType]) {
+              return state;
+            }
+            if (collisionCheck(state, actionType) === false) {
+              return update(state, {
+                cachedCollisionCheck: {
+                  [actionType] : {$set: true}
+                }
+              });
+            } else {
+              const {x, y, type} = state.now;
+              const nextNow = {...state.now};
+
+              switch (actionType) {
+                case DOWN:
+                  nextNow.y = y + 1;
+                  break;
+                case LEFT:
+                  nextNow.x = x - 1;
+                  break;
+                case RIGHT:
+                  nextNow.x = x + 1;
+                  break;
+                default:
+                  return state;
+              }
+
+              return update(state, {
+                now: {$set: nextNow},
+                cachedCollisionCheck: {$set : {
+                    [LEFT]: false,
+                    [DOWN]: false,
+                    [RIGHT]: false,
+                    [ROTATE]: Tetromino[type].maxRotate === 0
+                  }}
+              });
+            }
+          },
+
+      [ROTATE]: state => {
+        if (state.cachedCollisionCheck[ROTATE]) {
           return state;
         }
-        if (!collisionCheck(state, type)) {
+
+        const {result, dx, dy, rotate} = rotateCollisionCheck(state);
+        if (result === false) {
           return update(state, {
-            checkedCollision: {
-              [type] : {$set: true}
+            cachedCollisionCheck: {
+              [ROTATE] : {$set: true}
             }
           });
-        } else {
-          const {x, y, type, rotate} = state.now;
-          const nextNow = {...state.now};
-
-          switch (type) {
-            case DOWN:
-              nextNow.y = y + 1;
-              break;
-            case LEFT:
-              nextNow.x = x - 1;
-              break;
-            case RIGHT:
-              nextNow.x = x + 1;
-              break;
-            case ROTATE:
-              const last = Tetromino[type].maxRotate;
-              nextNow.rotate = (rotate + 1) % (last + 1);
-              const {dx, dy} = Tetromino[type].rotate[nextNow.rotate];
-              nextNow.x = x + dx;
-              nextNow.y = y + dy;
-              break;
-            default:
-              return state;
-          }
-
-          return update(state, {
-            now: {$merge: nextNow},
-            checkedCollision: {$set : {
-                [LEFT]: false,
-                [DOWN]: false,
-                [RIGHT]: false,
-                [ROTATE]: false
-              }}
-          });
         }
+
+        const {x, y, type} = state.now;
+        const nextNow = {
+          type, rotate,
+          x: x + dx,
+          y: y + dy,
+        };
+
+        return update(state, {
+          now: {$set: nextNow},
+          cachedCollisionCheck: {$set : {
+              [LEFT]: false,
+              [DOWN]: false,
+              [RIGHT]: false,
+              [ROTATE]: Tetromino[type].maxRotate === 0
+            }}
+        });
+
+
       },
 
       [DROP]: state => update(state, {
         now: {
           y: {$set: state.now.y + getDropPositionY(state)},
         },
-        checkedCollision: {$set : {
+        cachedCollisionCheck: {$set : {
             [LEFT]: false,
             [DOWN]: false,
             [RIGHT]: false,
@@ -306,40 +371,102 @@ export const block = handleActions(
         const newNow = {
           type: newBlock.type,
           rotate: newBlock.rotate,
-          x: null,
-          y: null
+          x: 4,
+          y: -Tetromino[newBlock.type].rotate[newBlock.rotate].h,
         };
 
         return update(state, {
           now: {$set: newNow},
           next: {$splice: [[0, 1]]},
-          checkedCollision: {$set : {
+          cachedCollisionCheck: {$set : {
               [LEFT]: false,
               [DOWN]: false,
               [RIGHT]: false,
-              [ROTATE]: false
+              [ROTATE]: Tetromino[newBlock.type].maxRotate === 0
+            }},
+          committed: {$set: {
+              type: null,
+              rotate: null,
+              x: null,
+              y: null,
+            }}
+        });
+      },
+
+      [COMMIT]: state => {
+        const {type, rotate, x, y} = state.now;
+        const {shape, w, h} = Tetromino[type].rotate[rotate];
+
+        let cx, cy, updateObj = null;
+        for (let iy = 0; iy < h; iy++) {
+          cy = iy + y;
+          if (cy < 0) {
+            continue;
+          }
+
+          for (let jx = 0; jx < w; jx++) {
+            if (shape[iy][jx] === BLOCK.X) {
+              continue;
+            }
+
+            cx = jx + x;
+            if (updateObj === null) {
+              updateObj = {};
+            }
+
+            if (!updateObj[cy]) {
+              updateObj[cy] = {}
+            }
+
+            updateObj[cy][cx] = {$set: type};
+          }
+        }
+
+        if (updateObj === null) {
+          return update(state, {
+            committed: {$set: {...state.now}},
+            now: {$set: {
+                type: null,
+                rotate: null,
+                x: null,
+                y: null,
+              }}
+          });
+        }
+
+        return update(state, {
+          board: updateObj,
+          committed: {$set: {...state.now}},
+          now: {$set: {
+              type: null,
+              rotate: null,
+              x: null,
+              y: null,
             }}
         });
       },
 
       [ROW_CLEAR]: (state, {payload: {rows}}) => {
-        const spliceArr = [];
-        const unshiftArr = [];
 
-        for (const idx of rows) {
-          spliceArr.push([idx, 1]);
-          unshiftArr.push(new Array(10).fill(BLOCK.X));
+        const {board} = state;
+        const rowClearedBoard = [];
+        const boardWidth = board[0].length;
+        const boardHeight = board.length;
+
+        for (let i = 0; i < boardHeight; i++) {
+          if (rows.includes(i)) {
+            rowClearedBoard.unshift(new Array(boardWidth).fill(BLOCK.X))
+          } else {
+            rowClearedBoard.push(board[i])
+          }
         }
 
         return update(state, {
-          board: {
-            $splice: spliceArr,
-            $unshift: unshiftArr
-          }
+          board: {$set: rowClearedBoard}
         });
       },
 
-      [CLEAR]: () => JSON.parse(JSON.stringify(defaultState)),
+      [CLEAR]: () => ({...defaultState}),
     },
-    JSON.parse(JSON.stringify(defaultState))
+    {...defaultState}
 );
