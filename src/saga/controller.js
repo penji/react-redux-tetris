@@ -9,6 +9,7 @@ const KEYCODE_BUTTON_MAP = {
   37: 'LEFT',
   39: 'RIGHT',
   32: 'SPACE',
+  13: 'ENTER',
 };
 
 const makeKeyboardChannel = () => eventChannel(emit => {
