@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 
 import {HighScore, LastScore, NowScore, Speed} from './components';
-import NextBlock from './NextBlock';
+import NextBlocks from './NextBlocks';
 
 const StyledDiv = styled.div`
   position: absolute;
@@ -23,10 +23,10 @@ const InfoBoard = connect(
       return (
           <StyledDiv>
             <HighScore/>
-            {game.state === 'READY' && <LastScore/>}
-            {game.state === 'GAME_IS_ON' && <NowScore/>}
+            {!game.playing && <LastScore/>}
+            {game.playing && <NowScore/>}
             <Speed/>
-            <NextBlock/>
+            <NextBlocks/>
           </StyledDiv>
       );
     }

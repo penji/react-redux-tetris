@@ -2,7 +2,7 @@ import React from 'react';
 import {Title} from './components';
 import styled from 'styled-components';
 
-import {Block} from '../block/Block';
+import {NextBlock} from '../block/NextBlock';
 import {connect} from 'react-redux';
 
 const Div = styled.div`
@@ -19,7 +19,12 @@ const Board = styled.div`
   background-color: grey;
 `;
 
-const NextBlock = connect(
+const Table = styled.table`
+  width: 100%;
+  height: 100%;
+`;
+
+const NextBlocks = connect(
     ({block}) => ({next: block.next})
 )(
     ({next}) => {
@@ -28,23 +33,23 @@ const NextBlock = connect(
           <Div>
             <Title>NEXT</Title>
             <Board>
-              <table style={{width:'100%', height:'100%'}}>
+              <Table>
                 <tbody>
                 {
                   nextArr.map(({type}, i) => (
                       <tr key={i}>
                         <td>
-                          <Block type={type}/>
+                          <NextBlock type={type}/>
                         </td>
                       </tr>
                   ))
                 }
                 </tbody>
-              </table>
+              </Table>
             </Board>
           </Div>
       )
     }
 );
 
-export default NextBlock;
+export default NextBlocks;
