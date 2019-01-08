@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 
 import {Cell} from '../block/Cell';
+import {Block} from '../block/Block';
 
 const StyledDiv = styled.div`
   position: absolute;
@@ -12,6 +13,9 @@ const StyledDiv = styled.div`
   background-color: palegoldenrod;
   width: 150px;
   height: 300px;
+  ${({hidden}) => `
+  display: ${hidden ? 'none' : 'block'}
+  `}
 `;
 const Row = styled.div`
   width: 150px;
@@ -20,16 +24,19 @@ const Row = styled.div`
 `;
 
 export const BlockBoard = connect(
-    ({block}) => ({board: block.board})
+    ({block, game}) => ({board: block.board, now: block.now, paused: game.paused})
 )(
-    ({board: t}) => (
-        <StyledDiv>
+    ({board: t, now: block, paused}) => (
+        <StyledDiv hidden={paused}>
           {
             t.map((row, y) => (
                 <Row key={y}>
                   {row.map((type, x) => <Cell key={x} type={type}/>)}
                 </Row>
             ))
+          }
+          {
+            block.type && <Block {...block} />
           }
         </StyledDiv>
     )
