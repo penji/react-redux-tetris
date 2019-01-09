@@ -11,7 +11,7 @@ export default {
     Cell: {
       mapTypeToColor: {
         [BLOCK.X]: 'transparent',
-        [BLOCK.D]: '#7F8C8D',
+        [BLOCK.D]: '#B5C2C3',
         [BLOCK.I]: '#C0392B',
         [BLOCK.O]: '#F39C12',
         [BLOCK.T]: '#F1C40F',

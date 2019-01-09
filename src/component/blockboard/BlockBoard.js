@@ -6,6 +6,7 @@ import {Cell} from '../block/Cell';
 import {Block} from '../block/Block';
 
 import theme from '../../theme/index'
+import {BLOCK} from '../../model/Tetromino';
 
 const StyledDiv = styled.div`
   position: absolute;
@@ -31,22 +32,29 @@ const Row = styled.div`
 `;
 
 export const BlockBoard = connect(
-    ({block, game}) => ({board: block.board, now: block.now, paused: game.paused})
+    ({block, game}) => ({
+      board: block.board,
+      now: block.now,
+      paused: game.paused,
+      playing: game.playing,
+    })
 )(
-    ({board: t, now: block, paused}) => (
-        <StyledDiv hidden={paused}>
-          {
-            t.map((row, y) => (
-                <Row key={y}>
-                  {row.map((type, x) => <Cell key={x} type={type}/>)}
-                </Row>
-            ))
-          }
-          {
-            block.type && <Block {...block} />
-          }
-        </StyledDiv>
-    )
+    ({board: t, now: block, paused, playing}) => {
+      return (
+          <StyledDiv hidden={paused}>
+            {
+              t.map((row, y) => (
+                  <Row key={y}>
+                    {row.map((type, x) => <Cell key={x} type={!playing && type !== BLOCK.X ? BLOCK.D : type}/>)}
+                  </Row>
+              ))
+            }
+            {
+              block.type && <Block {...block} />
+            }
+          </StyledDiv>
+      )
+    }
 );
 
 export default BlockBoard;
