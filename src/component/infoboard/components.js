@@ -2,29 +2,40 @@ import React from 'react';
 import styled from 'styled-components';
 import Counter from './Counter';
 import {connect} from 'react-redux';
+import theme from '../../theme/index';
 
 export const Label = styled.label`
   display: block;
-  font-weight: 700;
-  font-family: ARCADECLASSIC;
+  font-family: "Helvetica Neue";
 `;
 
 export const Value = styled(Label)`
   text-align: right;
-  font-size: 17px;
+  font-size: ${({theme}) => theme.fontSize}px;
+  color: ${({theme}) => theme.color}
+  font-weight: 700;
   bottom: 0px;
   right: 0px;
   line-height: 1;
 `;
 
+Value.defaultProps = {
+  theme: theme.BASE.infoboard.components.Value
+};
+
 export const Title = styled(Label)`
   text-align: left;
-  font-weight: bold;
-  font-size: 14px;
+  font-weight: 900;
+  font-size: ${({theme}) => theme.fontSize}px;
+  color: ${({theme}) => theme.color}
 `;
 
+Title.defaultProps = {
+  theme: theme.BASE.infoboard.components.Title
+};
+
 export const Div = styled.div`
-  background: yellow;
+  background: transparent;
   height: 32px;
   margin-bottom: 0px;
 `;

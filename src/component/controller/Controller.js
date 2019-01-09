@@ -2,17 +2,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {Up, Left, Right, Down, Space} from './buttons';
 
+import theme from '../../theme';
+
 import styled from 'styled-components';
 
 const StyledDiv = styled.div`
   position: absolute;
   box-sizing: border-box;
-  background-color: blue;
+  background-color: ${props => props.theme.background};
   width: 320px;
   height: 160px;
   padding: 5px;
   bottom: 0px;
 `;
+
+StyledDiv.defaultProps = {
+  theme: theme.BASE.controller.Controller
+};
 
 let Controller = ({button, pressed, changeButtonState}) => (
     <StyledDiv>

@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import {NextBlock} from '../block/NextBlock';
 import {connect} from 'react-redux';
 
+import theme from '../../theme/index'
+
 const Div = styled.div`
-  background: yellow;
+  background: transparent;
   height: 184px;
 `;
 
@@ -15,9 +17,14 @@ const Board = styled.div`
   width: 75px;
   height: 150px;
   top: 7.5px;
-  left: 22.5px;
-  background-color: grey;
+  left: 19px;
+  background-color: transparent;
+  border: 3px dotted ${({theme}) => theme.borderColor};
 `;
+
+Board.defaultProps = {
+  theme: theme.BASE.infoboard.NextBlocks
+};
 
 const Table = styled.table`
   width: 100%;

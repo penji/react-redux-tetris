@@ -1,6 +1,7 @@
 import React from 'react';
 
 import styled from 'styled-components';
+import theme from '../../theme/index'
 
 const Base = styled.button`
   position: absolute;
@@ -24,30 +25,39 @@ const Base = styled.button`
 
 const Move = styled(Base)`
   color: #fff;
-  background-color: #5bc0de;
-  border-color: #46b8da;
+  background-color: ${({theme}) => theme.normal};
+  box-shadow: 0 5px ${({theme}) => theme.shadowNormal};
   width: 30px;
   height: 30px;
   padding-top: 2px;
   
   &.active, :active {
-    background-color: #269abc;
-    border-color: #1b6d85;
+    background-color: ${({theme}) => theme.active};
+    box-shadow: 0 3px ${({theme}) => theme.shadowActive};
   }
 `;
+
+Move.defaultProps = {
+  theme: theme.BASE.controller.buttons.Move
+};
 
 const SpaceBtn = styled(Base)`
   padding: 45px 45px;
   border-radius: 100%;
-  background-color: #d9534f;
+  background-color: ${({theme}) => theme.normal};
+  box-shadow: 0 5px ${({theme}) => theme.shadowNormal};
   top: 31px;
   left: 28px;
   
   &.active, :active {
-    background-color: #ac2925;
-    border-color: #1b6d85;
+    background-color: ${({theme}) => theme.active};
+    box-shadow: 0 3px ${({theme}) => theme.shadowActive};
   }
 `;
+
+SpaceBtn.defaultProps = {
+  theme: theme.BASE.controller.buttons.SpaceBtn
+};
 
 const UpBtn = styled(Move)`
   top: 27px;

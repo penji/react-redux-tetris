@@ -2,6 +2,8 @@ import React from 'react';
 import styled, {keyframes} from 'styled-components';
 import {connect} from 'react-redux';
 
+import theme from '../theme/index';
+
 const blink = keyframes`
   0%   { opacity: 0; }
   25%  { opacity: 1; }
@@ -14,8 +16,8 @@ const Label = styled.label`
   display: block;
   text-align: CENTER;
   font-size: 1.9em;
-  font-family: ARCADECLASSIC;
-  font-weight: 700;
+  font-family: Lato;
+  font-weight: 900;
 `;
 
 const StyledDiv = styled.div`
@@ -23,23 +25,37 @@ const StyledDiv = styled.div`
   box-sizing: border-box;
   top: 10px;
   left: 10px;
-  background-color: palegoldenrod;
+  background-color: ${({theme}) => theme.background};
   width: 150px;
   height: 300px;
 `;
 
+StyledDiv.defaultProps = {
+  theme: theme.BASE.Message.PauseMessage
+};
+
 const StartMsgLb = styled(Label)`
-  top: 80px;
+  top: 55px;
   left: 20px;
   width: 130px;
+  color: ${({theme}) => theme.color};
   animation: ${blink} 2.5s linear infinite;
 `;
+
+StartMsgLb.defaultProps = {
+  theme: theme.BASE.Message.StartMessage
+};
 
 const PauseMsgLb = styled(Label)`
   top: 120px;
   left: 0px;
   width: 150px;
+  color: ${({theme}) => theme.color};
 `;
+
+PauseMsgLb.defaultProps = {
+  theme: theme.BASE.Message.PauseMessage
+};
 
 export const StartMessage = connect(
     ({game}) => game

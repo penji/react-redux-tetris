@@ -6,9 +6,11 @@ import InfoBoard from './infoboard/InfoBoard';
 import BlockBoard from './blockboard/BlockBoard';
 import {StartMessage, PauseMessage} from './Message';
 
+import theme from '../theme/index'
+
 const Scalable = styled.div`
   position: absolute;
-  background: black;
+  background: ${({theme}) => theme.background};
   top:50%;
   left:50%;
   ${({frameWidth, frameHeight, frameScale}) => `
@@ -18,6 +20,10 @@ const Scalable = styled.div`
     transform: scale(${frameScale});
   `}
 `;
+
+Scalable.defaultProps = {
+  theme: theme.BASE.MainFrame,
+};
 
 const BASE_SIZE = {
   width: 320,

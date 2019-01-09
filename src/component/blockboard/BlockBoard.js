@@ -5,18 +5,25 @@ import {connect} from 'react-redux';
 import {Cell} from '../block/Cell';
 import {Block} from '../block/Block';
 
+import theme from '../../theme/index'
+
 const StyledDiv = styled.div`
   position: absolute;
   box-sizing: border-box;
   top: 10px;
   left: 10px;
-  background-color: palegoldenrod;
+  background-color: ${({theme}) => theme.background};
   width: 150px;
   height: 300px;
   ${({hidden}) => `
   display: ${hidden ? 'none' : 'block'}
   `}
 `;
+
+StyledDiv.defaultProps = {
+  theme: theme.BASE.blackboard.BlackBoard
+};
+
 const Row = styled.div`
   width: 150px;
   height: 15px;
