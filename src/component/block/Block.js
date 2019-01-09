@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Tetromino, BLOCK} from '../../model/Tetromino';
+import {Tetromino} from '../../model/Tetromino';
 import {Cell} from './Cell';
 
 

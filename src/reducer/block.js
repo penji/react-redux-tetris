@@ -99,6 +99,8 @@ export const collisionCheck = (state, actionType) => {
         return false;
       }
       break;
+    default:
+      return state;
   }
 
   for (let iy = 0; iy < h; iy++) {

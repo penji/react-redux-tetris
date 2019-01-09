@@ -9,7 +9,7 @@ import {
   ROTATE,
   DROP,
   SHIFT_NEXT,
-  blockAction, COMMIT,
+  blockAction,
 } from '../../action/block';
 import {
   gameAction,
