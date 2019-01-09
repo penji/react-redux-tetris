@@ -90,6 +90,7 @@ export default function* () {
   });
 
   let isPaused = false;
+  let clearLines = 0;
 
   const pauseToggle = yield fork(function* () {
     while (true) {
@@ -123,7 +124,7 @@ export default function* () {
     let firstTimeoutDownFail = false;
     let isDropped = false;
     const speed = yield select(({info}) => info.speed);
-    let timeoutMs = 2200 - speed * 200;
+    let timeoutMs = 1050 - speed * 100;
     yield put(blockAction.shiftNext());
 
     let elapsedToCommit = 0, start, end;
@@ -153,10 +154,11 @@ export default function* () {
         }
 
         firstTimeoutDownFail = true;
-        timeoutMs = 500;
+        // 커밋 타임아웃은 speed가 올라갈수록 오히려 증가시켜 기회를 더 줌
+        timeoutMs = 100 * speed;
       } else {
         firstTimeoutDownFail = false;
-        timeoutMs = 2200 - speed * 200;
+        timeoutMs = 1050 - speed * 100;
       }
     }
     end = new Date().getTime();
@@ -177,7 +179,6 @@ export default function* () {
     // 꽉 차서 삭제할 줄 계산
     const {board} = state.block;
     const clearLineArr = [];
-    let clearLines = 0;
     let isLineFull;
 
     for (let iy = y; iy < y + h; iy++) {
@@ -213,6 +214,13 @@ export default function* () {
 
     if (clearLines > 0) {
       yield put(blockAction.rowClear(clearLineArr));
+    }
+
+    const nowSpeed = yield select(state => state.info.speed);
+
+    // 10줄 클리어 할 때맏 speed 증가
+    if (nowSpeed < 10 && clearLines > nowSpeed * 10) {
+      yield put(infoAction.speedUp());
     }
   }
 
