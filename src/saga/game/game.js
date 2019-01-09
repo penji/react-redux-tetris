@@ -46,6 +46,7 @@ function* initialize() {
 }
 
 function* end() {
+  yield put(infoAction.speed(1));
   yield put(gameAction.ready());
 }
 
