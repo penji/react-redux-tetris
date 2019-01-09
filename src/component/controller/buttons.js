@@ -27,9 +27,9 @@ const Move = styled(Base)`
   color: #fff;
   background-color: ${({theme}) => theme.normal};
   box-shadow: 0 5px ${({theme}) => theme.shadowNormal};
-  width: 30px;
-  height: 30px;
-  padding-top: 2px;
+  width: 45px;
+  height: 45px;
+  padding-top: 3px;
   
   &.active, :active {
     background-color: ${({theme}) => theme.active};
@@ -42,12 +42,12 @@ Move.defaultProps = {
 };
 
 const SpaceBtn = styled(Base)`
-  padding: 45px 45px;
+  padding: 60px 60px;
   border-radius: 100%;
   background-color: ${({theme}) => theme.normal};
   box-shadow: 0 5px ${({theme}) => theme.shadowNormal};
-  top: 31px;
-  left: 28px;
+  top: 19px;
+  left: 15px;
   
   &.active, :active {
     background-color: ${({theme}) => theme.active};
@@ -60,34 +60,35 @@ SpaceBtn.defaultProps = {
 };
 
 const UpBtn = styled(Move)`
-  top: 27px;
-  left: 230px;
+  top: 8px;
+  left: 215px;
 `;
 
 const DownBtn = styled(Move)`
-  top: 95px;
-  left: 230px;
+  top: 105px;
+  left: 215px;
 `;
 
 const LeftBtn = styled(Move)`
-  top: 61px;
-  left: 198px;
+  top: 58px;
+  left: 169px;
 `;
 
 const RightBtn = styled(Move)`
-  top: 61px;
-  left: 261px;
+  top: 58px;
+  left: 260px;
 `;
 
+let touch = false;
 export const Up = ({ type,
                      pressed,
                      onMouseTouchEvent }) => (
     <UpBtn
         className={pressed ? 'active' : ''}
-        onMouseDown={() => onMouseTouchEvent(type, true)}
-        onMouseUp={() => onMouseTouchEvent(type, false)}
-        onTouchStart={() => onMouseTouchEvent(type, true)}
-        onTouchEnd={() => onMouseTouchEvent(type, false)}
+        onMouseDown={() => !touch && onMouseTouchEvent(type, true)}
+        onMouseUp={() => !touch && onMouseTouchEvent(type, false)}
+        onTouchStart={() => {touch = true; onMouseTouchEvent(type, true);}}
+        onTouchEnd={() => {touch = true; onMouseTouchEvent(type, false);}}
     />
 );
 
@@ -96,10 +97,10 @@ export const Down = ({ type,
                      onMouseTouchEvent }) => (
     <DownBtn
         className={pressed ? 'active' : ''}
-        onMouseDown={() => onMouseTouchEvent(type, true)}
-        onMouseUp={() => onMouseTouchEvent(type, false)}
-        onTouchStart={() => onMouseTouchEvent(type, true)}
-        onTouchEnd={() => onMouseTouchEvent(type, false)}
+        onMouseDown={() => !touch && onMouseTouchEvent(type, true)}
+        onMouseUp={() => !touch && onMouseTouchEvent(type, false)}
+        onTouchStart={() => {touch = true; onMouseTouchEvent(type, true);}}
+        onTouchEnd={() => {touch = true; onMouseTouchEvent(type, false);}}
     />
 );
 
@@ -108,10 +109,10 @@ export const Left = ({ type,
                      onMouseTouchEvent }) => (
     <LeftBtn
         className={pressed ? 'active' : ''}
-        onMouseDown={() => onMouseTouchEvent(type, true)}
-        onMouseUp={() => onMouseTouchEvent(type, false)}
-        onTouchStart={() => onMouseTouchEvent(type, true)}
-        onTouchEnd={() => onMouseTouchEvent(type, false)}
+        onMouseDown={() => !touch && onMouseTouchEvent(type, true)}
+        onMouseUp={() => !touch && onMouseTouchEvent(type, false)}
+        onTouchStart={() => {touch = true; onMouseTouchEvent(type, true);}}
+        onTouchEnd={() => {touch = true; onMouseTouchEvent(type, false);}}
     />
 );
 
@@ -120,10 +121,10 @@ export const Right = ({ type,
                      onMouseTouchEvent }) => (
     <RightBtn
         className={pressed ? 'active' : ''}
-        onMouseDown={() => onMouseTouchEvent(type, true)}
-        onMouseUp={() => onMouseTouchEvent(type, false)}
-        onTouchStart={() => onMouseTouchEvent(type, true)}
-        onTouchEnd={() => onMouseTouchEvent(type, false)}
+        onMouseDown={() => !touch && onMouseTouchEvent(type, true)}
+        onMouseUp={() => !touch && onMouseTouchEvent(type, false)}
+        onTouchStart={() => {touch = true; onMouseTouchEvent(type, true);}}
+        onTouchEnd={() => {touch = true; onMouseTouchEvent(type, false);}}
     />
 );
 
@@ -132,9 +133,9 @@ export const Space = ({ type,
                      onMouseTouchEvent }) => (
     <SpaceBtn
         className={pressed ? 'active' : ''}
-        onMouseDown={() => onMouseTouchEvent(type, true)}
-        onMouseUp={() => onMouseTouchEvent(type, false)}
-        onTouchStart={() => onMouseTouchEvent(type, true)}
-        onTouchEnd={() => onMouseTouchEvent(type, false)}
+        onMouseDown={() => !touch && onMouseTouchEvent(type, true)}
+        onMouseUp={() => !touch && onMouseTouchEvent(type, false)}
+        onTouchStart={() => {touch = true; onMouseTouchEvent(type, true);}}
+        onTouchEnd={() => {touch = true; onMouseTouchEvent(type, false);}}
     />
 );
