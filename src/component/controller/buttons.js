@@ -6,6 +6,7 @@ import theme from '../../theme/index';
 import SwitchPNG from '../../resource/switch.png';
 
 const Base = styled.button`
+  -webkit-tap-highlight-color: rgba(255,255,255,0);
   position: absolute;
   box-sizing: border-box;
   display: inline-block;
