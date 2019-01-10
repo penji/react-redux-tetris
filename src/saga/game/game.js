@@ -19,7 +19,7 @@ function* onReady() {
   yield all([
       yield takeEvery('LEFT_TRUE', function* () {
         const {speed} = yield select(state => state.info);
-        if (speed > 0) {
+        if (speed > 1) {
           yield put(infoAction.speedDown());
         }
       }),
