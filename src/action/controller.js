@@ -1,5 +1,6 @@
 import { createActions } from 'redux-actions';
 
+export const INVERSE_POSITION = 'INVERSE_POSITION';
 const actionNames = [
   'UP_TRUE',
   'UP_FALSE',
@@ -11,19 +12,16 @@ const actionNames = [
   'RIGHT_FALSE',
   'SPACE_TRUE',
   'SPACE_FALSE',
+  INVERSE_POSITION,
 ];
-
-const _BTN_STATE = {};
 
 const actionMap = {};
 
 for (const actionName of actionNames) {
-  _BTN_STATE[actionName] = actionName;
   actionMap[actionName] = undefined;
 }
 
 export const buttonAction = createActions(actionMap);
-export const BTN_STATE = _BTN_STATE;
 
 
 

@@ -9,6 +9,10 @@ import {
 import {infoAction} from '../../action/info';
 import {blockAction} from '../../action/block';
 
+import {
+  buttonAction
+} from '../../action/controller';
+
 import playing from './playing';
 
 function* onReady() {
@@ -24,6 +28,9 @@ function* onReady() {
         if (speed < 10) {
           yield put(infoAction.speedUp());
         }
+      }),
+      yield takeEvery('SWITCH_FALSE', function* () {
+        yield put(buttonAction.inversePosition())
       }),
       yield take('SPACE_TRUE', function* () {
       })

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {Up, Left, Right, Down, Space} from './buttons';
+import {Up, Left, Right, Down, Space, Switch} from './buttons';
 
 import theme from '../../theme';
 
@@ -20,37 +20,50 @@ StyledDiv.defaultProps = {
   theme: theme.BASE.controller.Controller
 };
 
-let Controller = ({button, pressed, changeButtonState}) => (
+let Controller = ({button, pressed, changeButtonState, playing, inversed}) => (
     <StyledDiv>
       <Up
+          inversed={inversed}
           type={'UP'}
           pressed={button === 'UP' && pressed}
           onMouseTouchEvent={changeButtonState}
       />
       <Down
+          inversed={inversed}
           type={'DOWN'}
           pressed={button === 'DOWN' && pressed}
           onMouseTouchEvent={changeButtonState}
       />
       <Left
+          inversed={inversed}
           type={'LEFT'}
           pressed={button === 'LEFT' && pressed}
           onMouseTouchEvent={changeButtonState}
       />
       <Right
+          inversed={inversed}
           type={'RIGHT'}
           pressed={button === 'RIGHT' && pressed}
           onMouseTouchEvent={changeButtonState}
       />
       <Space
+          inversed={inversed}
           type={'SPACE'}
           pressed={button === 'SPACE' && pressed}
           onMouseTouchEvent={changeButtonState}
       />
+      {
+        !playing &&
+        <Switch
+          type={'SWITCH'}
+          pressed={button === 'SWITCH' && pressed}
+          onMouseTouchEvent={changeButtonState}
+        />
+      }
     </StyledDiv>
 );
 
-const mapStateToProps = state => state.controller;
+const mapStateToProps = state => ({...state.controller, ...state.game});
 
 const mapDispatchToProps = dispatch => ({
   changeButtonState: (type, pressed) => {
