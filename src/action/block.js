@@ -1,5 +1,5 @@
 import { createActions } from 'redux-actions';
-import {Tetromino, NORMAL_TYPES} from '../model/Tetromino';
+import {NORMAL_TYPES} from '../model/Tetromino';
 
 export const DOWN = 'BLOCK/DOWN';
 export const LEFT = 'BLOCK/LEFT';
@@ -12,31 +12,27 @@ export const COMMIT = 'BLOCK/COMMIT';
 export const ROW_CLEAR = 'BLOCK/ROW_CLEAR';
 export const CLEAR = 'BLOCK/CLEAR';
 
-const getRandomType = types => types[Math.floor(Math.random() * types.length)];
-const getRandomRotate = type =>
-    Math.floor(Math.random() * (Tetromino[type].maxRotate + 1));
-
 const actionCreator = createActions({
   [DOWN]: undefined,
   [LEFT]: undefined,
   [RIGHT]: undefined,
   [ROTATE]: undefined,
   [DROP]: undefined,
-  [PUSH_NEXT]: (num = 10, blocks = null, ramdomRotate = false) => {
-    if (Array.isArray(blocks)) {
-      return {blocks};
-    }
-
+  [PUSH_NEXT] : () => {
+    const blocks = NORMAL_TYPES.slice(0);
     const randomBlocks = [];
-    for (let i = 0; i < num; i++) {
-      const type = getRandomType(NORMAL_TYPES);
+    while (blocks.length > 0) {
       randomBlocks.push({
-        type,
-        rotate: ramdomRotate ? getRandomRotate(type) : 0
+        type: // 피셔-예이츠 셔플
+            blocks.splice(
+                Math.floor(Math.random() * blocks.length),
+                1
+            )[0],
+        rotate: 0
       });
     }
-
-    return {blocks : randomBlocks};
+    console.error(randomBlocks);
+    return {blocks: randomBlocks};
   },
   [SHIFT_NEXT]: undefined,
   [COMMIT]: undefined,
