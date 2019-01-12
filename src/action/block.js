@@ -31,7 +31,6 @@ const actionCreator = createActions({
         rotate: 0
       });
     }
-    console.error(randomBlocks);
     return {blocks: randomBlocks};
   },
   [SHIFT_NEXT]: undefined,
