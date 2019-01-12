@@ -8,6 +8,8 @@ import {Block} from '../block/Block';
 import theme from '../../theme/index'
 import {BLOCK} from '../../model/Tetromino';
 
+import {GAME_OVER} from '../../action/game';
+
 const StyledDiv = styled.div`
   position: absolute;
   box-sizing: border-box;
@@ -36,16 +38,16 @@ export const BlockBoard = connect(
       board: block.board,
       now: block.now,
       paused: game.paused,
-      playing: game.playing,
+      gameState: game.state,
     })
 )(
-    ({board: t, now: block, paused, playing}) => {
+    ({board: t, now: block, paused, gameState}) => {
       return (
           <StyledDiv hidden={paused}>
             {
               t.map((row, y) => (
                   <Row key={y}>
-                    {row.map((type, x) => <Cell key={x} type={!playing && type !== BLOCK.X ? BLOCK.D : type}/>)}
+                    {row.map((type, x) => <Cell key={x} type={gameState === GAME_OVER && type !== BLOCK.X ? BLOCK.D : type}/>)}
                   </Row>
               ))
             }

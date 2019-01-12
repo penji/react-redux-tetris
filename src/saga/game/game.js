@@ -3,7 +3,7 @@ import {all, select, cancel, put, take, takeEvery, call} from 'redux-saga/effect
 import {
   READY,
   GAME_IS_ON,
-  gameAction
+  gameAction, GAME_OVER,
 } from '../../action/game';
 
 import {infoAction} from '../../action/info';
@@ -16,6 +16,8 @@ import {
 import playing from './playing';
 
 function* onReady() {
+  yield put(infoAction.speed(1));
+  yield put(blockAction.clear());
   yield all([
       yield takeEvery('LEFT_TRUE', function* () {
         const {speed} = yield select(state => state.info);
@@ -41,19 +43,17 @@ function* onReady() {
 }
 
 function* onGame() {
-  yield call(initialize);
-  yield call(playing);
-  yield call(end);
-}
-
-function* initialize() {
   yield put(infoAction.nowScore(0, false));
   yield put(blockAction.clear());
   yield put(blockAction.pushNext());
+  yield call(playing);
 }
 
-function* end() {
-  yield put(infoAction.speed(1));
+function* onGameover () {
+  // lastScore에 지난 게임 점수 등록
+  const state = yield select();
+  yield put(infoAction.lastScore(state.info.nowScore));
+  yield take('SPACE_TRUE');
   yield put(gameAction.ready());
 }
 
@@ -61,6 +61,7 @@ export default function* () {
   yield all([
     yield takeEvery(READY, onReady),
     yield takeEvery(GAME_IS_ON, onGame),
+    yield takeEvery(GAME_OVER, onGameover),
   ]);
   yield call(onReady);
 }

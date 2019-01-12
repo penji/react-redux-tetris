@@ -7,7 +7,7 @@ import {
   GAME_IS_ON,
   PAUSED,
   RESUMED,
-  gameAction,
+  gameAction, GAME_OVER,
 } from '../action/game';
 
 const mapActionToState = {
@@ -26,22 +26,33 @@ const mapActionToState = {
   [RESUMED]: {
     playing: true,
     paused: false,
+  },
+  [GAME_OVER]: {
+    playing: true,
+    paused: false,
   }
 
 };
 
 export const game = handleActions(
     {
-      [makeCombineActionType(gameAction)]: (state, {type}) => {
-        return update(state, {$set: {
-            ...mapActionToState[type],
-            state: type,
-          }})
+      [makeCombineActionType(gameAction)]: (state, {type, payload}) => {
+        const toMerged = {
+          ...mapActionToState[type],
+          state: type,
+        };
+
+        if (type === GAME_OVER) {
+          toMerged.highScoreUpdated = payload.highScoreUpdated;
+        }
+
+        return update(state, {$merge: toMerged})
       }
     },
     {
       state: 'READY',
       playing: false,
       paused: false,
+      highScoreUpdated: false,
     }
 );

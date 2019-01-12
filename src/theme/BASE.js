@@ -77,4 +77,12 @@ export default {
       background: '#BDC3C7',
     },
   },
+  GameOverBoard: {
+    Title: {
+      color: '#34495E',
+    },
+    Score: {
+      color: '#34495E',
+    }
+  }
 };

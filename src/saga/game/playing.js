@@ -70,14 +70,6 @@ function* timeoutDown() {
   return bY !== nY;
 }
 
-function* onGameover () {
-  // lastScore에 지난 게임 점수 등록
-  const state = yield select();
-
-  yield put(infoAction.lastScore(state.info.nowScore));
-  yield put(infoAction.nowScore(0, false));
-}
-
 export default function* () {
   const asyncTask = yield fork(function* () {
     while (true) {
@@ -95,6 +87,7 @@ export default function* () {
     bonus: 0,
     block: 0
   };
+  let highScoreUpdated = false;
 
   const pauseToggle = yield fork(function* () {
     while (true) {
@@ -223,10 +216,15 @@ export default function* () {
         blockScore = speedBase * fast * drop,
 
         // 최종 점수: 개별 블록 점수 * (삭제된 줄 수 + 1)
-        finalScore = Math.floor(blockScore * (clearLine.block + clearLine.bonus + 1));
+        finalScore = Math.floor(blockScore * (clearLine.block + clearLine.bonus + 1)),
+
+        newScore = state.info.nowScore + finalScore;
+
+    // highScore 갱신 여부 확인
+    highScoreUpdated = state.info.highScore < newScore;
 
     // 점수 및 줄 삭제 업데이트
-    yield put(infoAction.nowScore(state.info.nowScore + finalScore));
+    yield put(infoAction.nowScore(newScore, highScoreUpdated));
 
     if (clearLine.block > 0) {
       clearLine.bonus += clearLine.block;
@@ -248,5 +246,5 @@ export default function* () {
 
   yield cancel(asyncTask);
   yield cancel(pauseToggle);
-  yield call(onGameover);
+  yield put(gameAction.gameOver(highScoreUpdated));
 }

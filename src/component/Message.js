@@ -14,7 +14,7 @@ const blink = keyframes`
 const Label = styled.label`
   position: absolute;
   display: block;
-  text-align: CENTER;
+  text-align: center;
   font-size: 1.9em;
   font-family: Lato;
   font-weight: 900;

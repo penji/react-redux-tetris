@@ -5,6 +5,7 @@ import Controller from './controller/Controller';
 import InfoBoard from './infoboard/InfoBoard';
 import BlockBoard from './blockboard/BlockBoard';
 import {StartMessage, PauseMessage} from './Message';
+import GameOverBoard from './GameOverBoard';
 
 import theme from '../theme/index'
 
@@ -91,6 +92,7 @@ export default class MainFrame extends Component {
           <Controller/>
           <StartMessage/>
           <PauseMessage/>
+          <GameOverBoard/>
         </Scalable>
     );
   }
