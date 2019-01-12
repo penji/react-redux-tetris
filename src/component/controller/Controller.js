@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {Up, Left, Right, Down, Space, Switch} from './buttons';
+import {Up, Left, Right, Down, Space, Switch, PauseResumeToggle} from './buttons';
 
 import theme from '../../theme';
 
 import styled from 'styled-components';
-import {READY} from '../../action/game';
+import {GAME_IS_ON, PAUSED, READY, RESUMED} from '../../action/game';
 
 const StyledDiv = styled.div`
   position: absolute;
@@ -59,6 +59,19 @@ let Controller = ({button, pressed, changeButtonState, state, inversed}) => (
           type={'SWITCH'}
           pressed={button === 'SWITCH' && pressed}
           onMouseTouchEvent={changeButtonState}
+        />
+      }
+      {
+        (
+            state === GAME_IS_ON
+            || state === PAUSED
+            || state === RESUMED
+        ) &&
+        <PauseResumeToggle
+            type={'PAUSE_RESUME'}
+            paused={state === PAUSED}
+            pressed={button === 'PAUSE_RESUME' && pressed}
+            onMouseTouchEvent={changeButtonState}
         />
       }
     </StyledDiv>

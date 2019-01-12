@@ -93,11 +93,12 @@ export default function* () {
     while (true) {
       const _race = yield race([
         take('ENTER_TRUE'),
+        take('PAUSE_RESUME_TRUE'),
         take(ACTIVE),
         take(HIDDEN),
       ]);
 
-      if (_race[0]) {
+      if (_race[0] || _race[1]) {
         if (isPaused === false) {
           yield put(gameAction.paused());
         } else {

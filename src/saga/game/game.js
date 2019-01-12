@@ -32,7 +32,7 @@ function* onReady() {
         }
       }),
       yield takeEvery('SWITCH_FALSE', function* () {
-        yield put(buttonAction.inversePosition())
+        yield put(buttonAction.inversePositionFalse())
       }),
       yield take('SPACE_TRUE', function* () {
       })

@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import theme from '../../theme/index';
 
 import SwitchPNG from '../../resource/switch.png';
+import PausePNG from '../../resource/pause.png';
+import PlayPNG from '../../resource/play.png';
 
 const Base = styled.button`
   -webkit-tap-highlight-color: rgba(255,255,255,0);
@@ -102,6 +104,25 @@ const SwitchBtn = styled(Move)`
   }
 `;
 
+const PauseResumeToggleBtn = styled(Move)`
+  border-radius: 90%;
+  background: url(${({paused}) => paused ? PlayPNG : PausePNG}) no-repeat;
+  padding: 5px;
+  background-size: cover;
+  top: 8px;
+  left: 151.5px;
+  width: 25px;
+  height: 25px;
+  background-origin: content-box;
+  background-color: #F1C40F;
+  box-shadow: 0 3px #F39C12;
+  
+  &.active, :active {
+    background-color: #F39C12;
+    box-shadow: 0 3px #E67E22;
+  }
+`;
+
 let touch = false;
 export const Up = ({ type,
                      pressed,
@@ -183,6 +204,21 @@ export const Switch = ({ type,
                         onMouseTouchEvent,
                        }) => (
     <SwitchBtn
+        className={pressed ? 'active' : ''}
+        onMouseDown={() => !touch && onMouseTouchEvent(type, true)}
+        onMouseUp={() => !touch && onMouseTouchEvent(type, false)}
+        onTouchStart={() => {touch = true; onMouseTouchEvent(type, true);}}
+        onTouchEnd={() => {touch = true; onMouseTouchEvent(type, false);}}
+    />
+);
+
+export const PauseResumeToggle = ({ type,
+                                    pressed,
+                                    onMouseTouchEvent,
+                                    paused,
+                                  }) => (
+    <PauseResumeToggleBtn
+        paused={paused}
         className={pressed ? 'active' : ''}
         onMouseDown={() => !touch && onMouseTouchEvent(type, true)}
         onMouseUp={() => !touch && onMouseTouchEvent(type, false)}
