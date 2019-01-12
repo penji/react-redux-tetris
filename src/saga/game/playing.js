@@ -128,7 +128,11 @@ export default function* () {
     let firstTimeoutDownFail = false;
     let isDropped = false;
     const speed = yield select(({info}) => info.speed);
-    let timeoutMs = Math.floor(1000 * Math.pow(0.72, speed - 1));
+
+    let normalTimeoutMs = Math.floor(1000 * Math.pow(0.72, speed - 1)),
+        commitTimeoutMs = 150 * Math.min(speed, 15),
+        nowTimeoutMs = normalTimeoutMs;
+
     yield put(blockAction.shiftNext());
 
     let elapsedToCommit = 0, start, end;
@@ -138,11 +142,11 @@ export default function* () {
       if (isPaused) {
         yield take(RESUMED);
       }
-      let result = yield call(blockMovePhase, timeoutMs);
+      let result = yield call(blockMovePhase, nowTimeoutMs);
 
       if (result === 'paused') {
         yield take(RESUMED);
-        result = yield call(blockMovePhase, timeoutMs);
+        result = yield call(blockMovePhase, nowTimeoutMs);
       } else if (result === 'pass') {
         continue;
       } if (result === 'drop') {
@@ -159,10 +163,11 @@ export default function* () {
 
         firstTimeoutDownFail = true;
         // 커밋 타임아웃은 speed가 올라갈수록 오히려 증가시켜 기회를 더 줌
-        timeoutMs = 150 * speed;
+        // 단 스피드 15 초과시 더 증가하지 않음
+        nowTimeoutMs = commitTimeoutMs;
       } else {
         firstTimeoutDownFail = false;
-        timeoutMs = Math.floor(1000 * Math.pow(0.72, speed - 1));
+        nowTimeoutMs = normalTimeoutMs;
       }
     }
     end = new Date().getTime();
@@ -229,7 +234,7 @@ export default function* () {
     const nowSpeed = yield select(state => state.info.speed);
 
     // 10줄 클리어 할 때마다 speed 증가
-    if (nowSpeed < 10 && clearLine.all > nowSpeed * 10) {
+    if (nowSpeed < 20 && clearLine.all > nowSpeed * 10) {
       yield put(infoAction.speedUp());
     }
 
