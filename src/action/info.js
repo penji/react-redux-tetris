@@ -6,6 +6,8 @@ export const NOW_SCORE = 'INFO/NOW_SCORE';
 export const SPEED = 'INFO/SPEED';
 export const SPEED_UP = 'INFO/SPEED_UP';
 export const SPEED_DOWN = 'INFO/SPEED_DOWN';
+export const COMBO = 'INFO/COMBO';
+export const CLEAR_COMBO = 'INFO/CLEAR_COMBO';
 
 
 const actionCreator = createActions({
@@ -15,6 +17,8 @@ const actionCreator = createActions({
   [SPEED]: speed => speed,
   [SPEED_UP]: undefined,
   [SPEED_DOWN]: undefined,
+  [COMBO]: combo => combo,
+  [CLEAR_COMBO]: undefined,
 });
 
 export const infoAction = actionCreator.info;

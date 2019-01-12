@@ -6,7 +6,8 @@ import {
   NOW_SCORE,
   SPEED,
   SPEED_UP,
-  SPEED_DOWN
+  SPEED_DOWN,
+  COMBO, CLEAR_COMBO,
 } from '../action/info';
 
 export const info = handleActions(
@@ -20,14 +21,16 @@ export const info = handleActions(
             lastScore: {$set: payload}
           }),
       [NOW_SCORE]: (state, {payload: {score, highScoreUpdate}}) => {
-        const updateObj = {
-          nowScore: {$set: score}
-        };
         if (highScoreUpdate && state.highScore < score) {
-          updateObj['highScore'] = {$set: score};
+          return update(state, {
+            nowScore: {$set: score},
+            highScore: {$set: score}
+          });
+        } else {
+          return update(state, {
+            nowScore: {$set: score},
+          });
         }
-
-        return update(state, updateObj);
       },
       [SPEED]: (state, {payload}) =>
           update(state, {
@@ -41,11 +44,20 @@ export const info = handleActions(
           update(state, {
             speed: {$set: state.speed - 1}
           }),
+      [COMBO]: (state, {payload}) =>
+          update(state, {
+            combo: {$set: payload}
+          }),
+      [CLEAR_COMBO]: state =>
+          update(state, {
+            combo: {$set: 0}
+          }),
     },
     {
       highScore: 0,
       lastScore: 0,
       nowScore: 0,
       speed: 1,
+      combo: 0,
     }
 );

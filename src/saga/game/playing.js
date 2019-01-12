@@ -84,7 +84,7 @@ export default function* () {
   let isPaused = false;
   let clearLine = {
     all: 0,
-    bonus: 0,
+    combo: 0,
     block: 0
   };
   let highScoreUpdated = false;
@@ -216,24 +216,30 @@ export default function* () {
         blockScore = speedBase * fast * drop,
 
         // 최종 점수: 개별 블록 점수 * (삭제된 줄 수 + 1)
-        finalScore = Math.floor(blockScore * (clearLine.block + clearLine.bonus + 1)),
+        finalScore = Math.floor(blockScore * (clearLine.block + state.info.combo + 1)),
 
         newScore = state.info.nowScore + finalScore;
 
     // highScore 갱신 여부 확인
     highScoreUpdated = state.info.highScore < newScore;
 
-    // 점수 및 줄 삭제 업데이트
+    // 점수 업데이트
     yield put(infoAction.nowScore(newScore, highScoreUpdated));
 
+    // 콤보 UI 및 줄 삭제 업데이트
     if (clearLine.block > 0) {
-      clearLine.bonus += clearLine.block;
       clearLine.all += clearLine.block;
+      if (clearLine.combo > 0) {
+        yield put(infoAction.combo(clearLine.combo + clearLine.block));
+      }
+      clearLine.combo += clearLine.block;
       yield put(blockAction.rowClear(clearLineArr));
     } else {
-      clearLine.bonus = 0;
+      if (clearLine.combo > 0) {
+        yield put(infoAction.clearCombo());
+        clearLine.combo = 0;
+      }
     }
-
 
     const nowSpeed = yield select(state => state.info.speed);
 

@@ -11,5 +11,5 @@ export const gameAction = createActions({
   [GAME_IS_ON]: undefined,
   [PAUSED]: undefined,
   [RESUMED]: undefined,
-  [GAME_OVER]: highScoreUpdated => ({highScoreUpdated})
+  [GAME_OVER]: highScoreUpdated => ({highScoreUpdated}),
 });

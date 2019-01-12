@@ -84,5 +84,9 @@ export default {
     Score: {
       color: '#34495E',
     }
+  },
+  Combo: {
+    fontSize: 25,
+    color: '#34495E',
   }
 };

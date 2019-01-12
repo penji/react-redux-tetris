@@ -6,6 +6,7 @@ import InfoBoard from './infoboard/InfoBoard';
 import BlockBoard from './blockboard/BlockBoard';
 import {StartMessage, PauseMessage} from './Message';
 import GameOverBoard from './GameOverBoard';
+import Combo from './Combo';
 
 import theme from '../theme/index'
 
@@ -93,6 +94,7 @@ export default class MainFrame extends Component {
           <StartMessage/>
           <PauseMessage/>
           <GameOverBoard/>
+          <Combo/>
         </Scalable>
     );
   }
