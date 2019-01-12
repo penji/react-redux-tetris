@@ -5,6 +5,7 @@ import {Up, Left, Right, Down, Space, Switch} from './buttons';
 import theme from '../../theme';
 
 import styled from 'styled-components';
+import {READY} from '../../action/game';
 
 const StyledDiv = styled.div`
   position: absolute;
@@ -20,7 +21,7 @@ StyledDiv.defaultProps = {
   theme: theme.BASE.controller.Controller
 };
 
-let Controller = ({button, pressed, changeButtonState, playing, inversed}) => (
+let Controller = ({button, pressed, changeButtonState, state, inversed}) => (
     <StyledDiv>
       <Up
           inversed={inversed}
@@ -53,7 +54,7 @@ let Controller = ({button, pressed, changeButtonState, playing, inversed}) => (
           onMouseTouchEvent={changeButtonState}
       />
       {
-        !playing &&
+        state === READY &&
         <Switch
           type={'SWITCH'}
           pressed={button === 'SWITCH' && pressed}
