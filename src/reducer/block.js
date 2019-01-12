@@ -167,9 +167,11 @@ export const rotateCollisionCheck = state => {
     newDy = dy;
   }
 
-  // cx, cy = 최종 보정 된 rotate 후 새 블록 위치
+  // cx, cy = 1차 보정 된 rotate 후 새 블록 위치
   let cx = x + newDx,
       cy = y + newDy;
+
+  let ty = 0, collapsed;
 
   //board의 rotate 전 내 블록 셀을 isBefore에 모두 기록
   const {
@@ -187,38 +189,49 @@ export const rotateCollisionCheck = state => {
     }
   }
 
-  for (let iy = 0; iy < h; iy++) {
-    for (let jx = 0; jx < w; jx++) {
+  while (ty >= -2) {
+    collapsed = false;
 
-      // 내 블록 영역상 빈 블록이면 통과
-      if (shape[iy][jx] === BLOCK.X) {
-        continue;
-      }
+    for (let iy = 0; iy < h; iy++) {
+      if (collapsed) break;
+      for (let jx = 0; jx < w; jx++) {
+        // 내 블록 영역상 빈 블록이면 통과
+        if (shape[iy][jx] === BLOCK.X) {
+          continue;
+        }
 
-      // 충돌 검사하려는 셀이 화면 상단이면 통과
-      if (iy + cy < 0) {
-        continue;
-      }
+        // 충돌 검사하려는 셀이 화면 상단이면 통과
+        if (iy + cy + ty < 0) {
+          continue;
+        }
 
-      // rotate 시킬 셀이 비었으면 통과
-      if (board[iy + cy][jx + cx] === BLOCK.X) {
-        continue;
-      }
-
-      // rotate 시킬 셀이 이전 블록일 경우 통과
-      if (isBefore[`${iy + cy},${jx + cx}`]) {
-        continue;
-      } else {
-        // 다른 block과의 충돌 확인됨
-        return {result: false}
+        // rotate 시킬 셀이 비었으면 통과
+        if (board[iy + cy + ty][jx + cx] === BLOCK.X) {
+          continue;
+        } else {
+          collapsed = true;
+          break;
+        }
       }
     }
+
+    if (collapsed) {
+      if (ty > -2) {
+        ty--;
+        continue;
+      } else {
+        return {result: false};
+      }
+    } else {
+      break;
+    }
   }
+
   // 회전할 방향의 모든 셀에서 충돌 확인 안됨. 이동 가능
   return {
     result: true,
     dx: newDx,
-    dy: newDy,
+    dy: newDy + ty,
     rotate: nextRotate
   }
 };
