@@ -124,7 +124,7 @@ export default function* () {
     let firstTimeoutDownFail = false;
     let isDropped = false;
     const speed = yield select(({info}) => info.speed);
-    let timeoutMs = 1050 - speed * 100;
+    let timeoutMs = Math.floor(1000 * Math.pow(0.72, speed - 1));
     yield put(blockAction.shiftNext());
 
     let elapsedToCommit = 0, start, end;
@@ -155,10 +155,10 @@ export default function* () {
 
         firstTimeoutDownFail = true;
         // 커밋 타임아웃은 speed가 올라갈수록 오히려 증가시켜 기회를 더 줌
-        timeoutMs = 100 * speed;
+        timeoutMs = 150 * speed;
       } else {
         firstTimeoutDownFail = false;
-        timeoutMs = 1050 - speed * 100;
+        timeoutMs = Math.floor(1000 * Math.pow(0.72, speed - 1));
       }
     }
     end = new Date().getTime();
