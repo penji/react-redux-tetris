@@ -133,6 +133,8 @@ export default function* () {
         commitTimeoutMs = 150 * Math.min(speed, 15),
         nowTimeoutMs = normalTimeoutMs;
 
+    let timeoutDownFailCount = 0;
+
     yield put(blockAction.shiftNext());
 
     let elapsedToCommit = 0, start, end;
@@ -162,9 +164,13 @@ export default function* () {
         }
 
         firstTimeoutDownFail = true;
+        timeoutDownFailCount++;
+        if (timeoutDownFailCount >= 3) {
+          break;
+        }
         // 커밋 타임아웃은 speed가 올라갈수록 오히려 증가시켜 기회를 더 줌
         // 단 스피드 15 초과시 더 증가하지 않음
-        nowTimeoutMs = commitTimeoutMs;
+        nowTimeoutMs = Math.floor(commitTimeoutMs * (1 - (timeoutDownFailCount - 1) / 10));
       } else {
         firstTimeoutDownFail = false;
         nowTimeoutMs = normalTimeoutMs;
