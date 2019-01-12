@@ -90,7 +90,11 @@ export default function* () {
   });
 
   let isPaused = false;
-  let clearLines = 0;
+  let clearLine = {
+    all: 0,
+    bonus: 0,
+    block: 0
+  };
 
   const pauseToggle = yield fork(function* () {
     while (true) {
@@ -179,6 +183,7 @@ export default function* () {
     // 꽉 차서 삭제할 줄 계산
     const {board} = state.block;
     const clearLineArr = [];
+    clearLine.block = 0;
     let isLineFull;
 
     for (let iy = y; iy < y + h; iy++) {
@@ -187,7 +192,7 @@ export default function* () {
       }
       isLineFull = !board[iy].some(v => v === BLOCK.X);
       if (isLineFull) {
-        clearLines++;
+        clearLine.block++;
         clearLineArr.push(iy);
       }
     }
@@ -207,21 +212,27 @@ export default function* () {
         blockScore = speedBase * fast * drop,
 
         // 최종 점수: 개별 블록 점수 * (삭제된 줄 수 + 1)
-        finalScore = Math.floor(blockScore * (clearLines + 1));
+        finalScore = Math.floor(blockScore * (clearLine.block + clearLine.bonus + 1));
 
     // 점수 및 줄 삭제 업데이트
     yield put(infoAction.nowScore(state.info.nowScore + finalScore));
 
-    if (clearLines > 0) {
+    if (clearLine.block > 0) {
+      clearLine.bonus += clearLine.block;
+      clearLine.all += clearLine.block;
       yield put(blockAction.rowClear(clearLineArr));
+    } else {
+      clearLine.bonus = 0;
     }
+
 
     const nowSpeed = yield select(state => state.info.speed);
 
-    // 10줄 클리어 할 때맏 speed 증가
-    if (nowSpeed < 10 && clearLines > nowSpeed * 10) {
+    // 10줄 클리어 할 때마다 speed 증가
+    if (nowSpeed < 10 && clearLine.all > nowSpeed * 10) {
       yield put(infoAction.speedUp());
     }
+
   }
 
   yield cancel(asyncTask);
