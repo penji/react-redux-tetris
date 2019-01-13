@@ -1,13 +1,13 @@
 {
-  "main.css": "/react-redux-tetris/static/css/main.3aa5327c.chunk.css",
-  "main.js": "/react-redux-tetris/static/js/main.2a395be1.chunk.js",
-  "main.js.map": "/react-redux-tetris/static/js/main.2a395be1.chunk.js.map",
-  "static/js/1.1b809054.chunk.js": "/react-redux-tetris/static/js/1.1b809054.chunk.js",
-  "static/js/1.1b809054.chunk.js.map": "/react-redux-tetris/static/js/1.1b809054.chunk.js.map",
+  "main.css": "/react-redux-tetris/static/css/main.5af3b3bd.chunk.css",
+  "main.js": "/react-redux-tetris/static/js/main.2fdbda4f.chunk.js",
+  "main.js.map": "/react-redux-tetris/static/js/main.2fdbda4f.chunk.js.map",
+  "static/js/1.c05c9f07.chunk.js": "/react-redux-tetris/static/js/1.c05c9f07.chunk.js",
+  "static/js/1.c05c9f07.chunk.js.map": "/react-redux-tetris/static/js/1.c05c9f07.chunk.js.map",
   "runtime~main.js": "/react-redux-tetris/static/js/runtime~main.52becac2.js",
   "runtime~main.js.map": "/react-redux-tetris/static/js/runtime~main.52becac2.js.map",
-  "static/css/main.3aa5327c.chunk.css.map": "/react-redux-tetris/static/css/main.3aa5327c.chunk.css.map",
+  "static/css/main.5af3b3bd.chunk.css.map": "/react-redux-tetris/static/css/main.5af3b3bd.chunk.css.map",
   "index.html": "/react-redux-tetris/index.html",
-  "precache-manifest.5eb7b4d01b31b13fc3ba6d21ca6de27f.js": "/react-redux-tetris/precache-manifest.5eb7b4d01b31b13fc3ba6d21ca6de27f.js",
+  "precache-manifest.e8bd93a8b1bd5fe13fb31c10098b0dd9.js": "/react-redux-tetris/precache-manifest.e8bd93a8b1bd5fe13fb31c10098b0dd9.js",
   "service-worker.js": "/react-redux-tetris/service-worker.js"
 }
