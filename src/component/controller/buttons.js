@@ -22,7 +22,7 @@ const Base = styled.button`
   border-radius: 6px;
   box-shadow: 0 5px #999;
   
-  &.active, :active {
+  &.active {
     box-shadow: 0 3px #666;
     transform: translateY(2px);
   }
@@ -36,7 +36,7 @@ const Move = styled(Base)`
   height: 45px;
   padding-top: 3px;
   
-  &.active, :active {
+  &.active {
     background-color: ${({theme}) => theme.active};
     box-shadow: 0 3px ${({theme}) => theme.shadowActive};
   }
@@ -55,7 +55,7 @@ const SpaceBtn = styled(Base)`
   left: 15px;
   left: ${({inversed}) => inversed ? 185 : 15}px;
   
-  &.active, :active {
+  &.active {
     background-color: ${({theme}) => theme.active};
     box-shadow: 0 3px ${({theme}) => theme.shadowActive};
   }
@@ -98,7 +98,7 @@ const SwitchBtn = styled(Move)`
   background-color: #F1C40F;
   box-shadow: 0 3px #F39C12;
   
-  &.active, :active {
+  &.active {
     background-color: #F39C12;
     box-shadow: 0 3px #E67E22;
   }
@@ -117,7 +117,7 @@ const PauseResumeToggleBtn = styled(Move)`
   background-color: #F1C40F;
   box-shadow: 0 3px #F39C12;
   
-  &.active, :active {
+  &.active {
     background-color: #F39C12;
     box-shadow: 0 3px #E67E22;
   }
@@ -128,16 +128,19 @@ export const Up = ({ type,
                      pressed,
                      onMouseTouchEvent,
                      inversed
-                   }) => (
-    <UpBtn
-        inversed={inversed}
-        className={pressed ? 'active' : ''}
-        onMouseDown={() => !touch && onMouseTouchEvent(type, true)}
-        onMouseUp={() => !touch && onMouseTouchEvent(type, false)}
-        onTouchStart={() => {touch = true; onMouseTouchEvent(type, true);}}
-        onTouchEnd={() => {touch = true; onMouseTouchEvent(type, false);}}
-    />
-);
+                   }) => {
+  console.error(`up className = ${pressed ? 'active' : ''}`);
+  return (
+      <UpBtn
+          inversed={inversed}
+          className={pressed ? 'active' : ''}
+          onMouseDown={() => !touch && onMouseTouchEvent(type, true)}
+          onMouseUp={() => !touch && onMouseTouchEvent(type, false)}
+          onTouchStart={() => {touch = true; onMouseTouchEvent(type, true);}}
+          onTouchEnd={() => {touch = true; onMouseTouchEvent(type, false);}}
+      />
+  );
+}
 
 export const Down = ({ type,
                        pressed,
