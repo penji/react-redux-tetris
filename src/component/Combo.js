@@ -76,7 +76,7 @@ class Combo extends Component {
 }
 
 Combo = connect(
-    ({game, info}) => ({state: game.state, combo: info.combo})
+    ({game}) => ({state: game.state, combo: game.line.last})
 )(Combo);
 
 export default Combo;

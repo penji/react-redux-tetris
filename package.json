@@ -16,6 +16,7 @@
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
     "redux-saga": "^0.16.2",
+    "redux-state-save": "^1.0.0",
     "styled-components": "^4.1.3"
   },
   "scripts": {

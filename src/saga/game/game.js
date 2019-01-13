@@ -6,7 +6,6 @@ import {
   gameAction, GAME_OVER,
 } from '../../action/game';
 
-import {infoAction} from '../../action/info';
 import {blockAction} from '../../action/block';
 
 import {
@@ -16,19 +15,22 @@ import {
 import playing from './playing';
 
 function* onReady() {
-  yield put(infoAction.speed(1));
+  yield put(gameAction.speed(1));
   yield put(blockAction.clear());
+  yield put(gameAction.line({
+    all: 0, last: 0, now: 0,
+  }));
   yield all([
       yield takeEvery('LEFT_TRUE', function* () {
-        const {speed} = yield select(state => state.info);
+        const {speed} = yield select(state => state.game);
         if (speed > 1) {
-          yield put(infoAction.speedDown());
+          yield put(gameAction.speed(speed - 1));
         }
       }),
       yield takeEvery('RIGHT_TRUE', function* () {
-        const {speed} = yield select(state => state.info);
+        const {speed} = yield select(state => state.game);
         if (speed < 20) {
-          yield put(infoAction.speedUp());
+          yield put(gameAction.speed(speed + 1));
         }
       }),
       yield takeEvery('SWITCH_FALSE', function* () {
@@ -43,7 +45,7 @@ function* onReady() {
 }
 
 function* onGame() {
-  yield put(infoAction.nowScore(0, false));
+  yield put(gameAction.score({now: 0}));
   yield put(blockAction.clear());
   yield put(blockAction.pushNext());
   yield call(playing);
@@ -51,8 +53,8 @@ function* onGame() {
 
 function* onGameover () {
   // lastScore에 지난 게임 점수 등록
-  const state = yield select();
-  yield put(infoAction.lastScore(state.info.nowScore));
+  const lastNowScore = yield select(state => state.game.score.now);
+  yield put(gameAction.score({last: lastNowScore}));
   yield take('SPACE_TRUE');
   yield put(gameAction.ready());
 }
@@ -63,5 +65,20 @@ export default function* () {
     yield takeEvery(GAME_IS_ON, onGame),
     yield takeEvery(GAME_OVER, onGameover),
   ]);
-  yield call(onReady);
+  const gameState = yield select(state => state.game.state);
+  switch (gameState) {
+    case READY:
+      yield call(onReady);
+      break;
+    case GAME_OVER:
+      yield call(onGameover);
+      break;
+    default:
+      const {paused, fromUser} = yield select(state => state.game);
+      if (paused && !fromUser) {
+        yield put(gameAction.resumed());
+      }
+      yield call(playing);
+      break;
+  }
 }

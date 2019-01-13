@@ -72,11 +72,10 @@ const HighScore = styled.label`
 `;
 
 const GameOverBoard = connect(
-    ({game, info}) => ({game, info})
+    ({game}) => ({game})
 )(
     ({
-       game: {state, highScoreUpdated},
-       info: {nowScore}
+       game: {state, highScoreUpdated, score: {now}},
      }) => (
         state === GAME_OVER && (
             <StyledDiv>
@@ -91,10 +90,10 @@ const GameOverBoard = connect(
               )}
               <Score
                   start={0}
-                  end={nowScore}
-                  useEasing={false}
+                  end={now}
+                  useEasing={true}
                   separator=","
-                  duration={4}
+                  duration={2}
               />
 
             </StyledDiv>

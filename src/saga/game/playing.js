@@ -1,7 +1,6 @@
 import {select, cancel, put, take, call, race, fork} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 
-import {infoAction} from '../../action/info';
 import {
   DOWN,
   LEFT,
@@ -70,6 +69,10 @@ function* timeoutDown() {
   return bY !== nY;
 }
 
+function* isPaused() {
+  return yield select(({game}) => ({paused: game.paused, fromUser: game.fromUser}));
+}
+
 export default function* () {
   const asyncTask = yield fork(function* () {
     while (true) {
@@ -81,12 +84,6 @@ export default function* () {
     }
   });
 
-  let isPaused = false;
-  let clearLine = {
-    all: 0,
-    combo: 0,
-    block: 0
-  };
   let highScoreUpdated = false;
 
   const pauseToggle = yield fork(function* () {
@@ -98,30 +95,28 @@ export default function* () {
         take(HIDDEN),
       ]);
 
+      const {paused, fromUser} = yield call(isPaused);
       if (_race[0] || _race[1]) {
-        if (isPaused === false) {
-          yield put(gameAction.paused());
+        if (paused === false) {
+          yield put(gameAction.paused(true));
         } else {
-          yield put(gameAction.resumed());
+          yield put(gameAction.resumed(true));
         }
-        isPaused = !isPaused;
-      } else if (_race[1] && isPaused) {
+      } else if (_race[2] && paused && !fromUser) {
         yield put(gameAction.resumed());
-        isPaused = !isPaused;
-      } else if (_race[2] && !isPaused) {
+      } else if (_race[3] && !paused && !fromUser) {
         yield put(gameAction.paused());
-        isPaused = !isPaused;
       }
     }
   });
 
   while (true) {
-    if (isPaused) {
+    if ((yield call(isPaused)).paused) {
       yield take(RESUMED);
     }
     let firstTimeoutDownFail = false;
     let isDropped = false;
-    const speed = yield select(({info}) => info.speed);
+    const speed = yield select(({game}) => game.speed);
 
     let normalTimeoutMs = Math.floor(1000 * Math.pow(0.72, speed - 1)),
         commitTimeoutMs = 150 * Math.min(speed, 15),
@@ -129,13 +124,17 @@ export default function* () {
 
     let timeoutDownFailCount = 0;
 
-    yield put(blockAction.shiftNext());
-
     let elapsedToCommit = 0, start, end;
 
-    start = new Date().getTime();
+    if ((yield select(state => state.block.now)).type === null) {
+      yield put(blockAction.shiftNext());
+      elapsedToCommit = 3000;
+    } else {
+      start = new Date().getTime();
+    }
+
     while (true) {
-      if (isPaused) {
+      if ((yield call(isPaused)).paused) {
         yield take(RESUMED);
       }
       let result = yield call(blockMovePhase, nowTimeoutMs);
@@ -170,13 +169,18 @@ export default function* () {
         nowTimeoutMs = normalTimeoutMs;
       }
     }
-    end = new Date().getTime();
-    elapsedToCommit = end - start;
+
+    if (elapsedToCommit === 0) {
+      end = new Date().getTime();
+      elapsedToCommit = end - start;
+    }
     yield put(blockAction.commit());
 
 
     // 커밋 후 처리
+
     const state = yield select();
+    let line = { ...state.game.line };
 
     // 게임 오버 판단
     const {type, rotate, y} = state.block.committed;
@@ -188,7 +192,7 @@ export default function* () {
     // 꽉 차서 삭제할 줄 계산
     const {board} = state.block;
     const clearLineArr = [];
-    clearLine.block = 0;
+    line.now = 0;
     let isLineFull;
 
     for (let iy = y; iy < y + h; iy++) {
@@ -197,12 +201,13 @@ export default function* () {
       }
       isLineFull = !board[iy].some(v => v === BLOCK.X);
       if (isLineFull) {
-        clearLine.block++;
+        line.now++;
         clearLineArr.push(iy);
       }
     }
 
     // 점수 계산
+    const scoreState = { ...state.game.score };
     const
         // speed 별 기본 점수
         speedBase = 200 * speed,
@@ -217,36 +222,36 @@ export default function* () {
         blockScore = speedBase * fast * drop,
 
         // 최종 점수: 개별 블록 점수 * (삭제된 줄 수 + 1)
-        finalScore = Math.floor(blockScore * (clearLine.block + state.info.combo + 1)),
+        finalScore = Math.floor(blockScore * (line.now + line.last + 1));
 
-        newScore = state.info.nowScore + finalScore;
+    scoreState.now += finalScore;
 
     // highScore 갱신 여부 확인
-    highScoreUpdated = state.info.highScore < newScore;
+    if (scoreState.high < scoreState.now) {
+      scoreState.high = scoreState.now;
+    }
 
     // 점수 업데이트
-    yield put(infoAction.nowScore(newScore, highScoreUpdated));
+    yield put(gameAction.score(scoreState));
 
     // 콤보 UI 및 줄 삭제 업데이트
-    if (clearLine.block > 0) {
-      clearLine.all += clearLine.block;
-      if (clearLine.combo > 0) {
-        yield put(infoAction.combo(clearLine.combo + clearLine.block));
-      }
-      clearLine.combo += clearLine.block;
+    if (line.now > 0) {
+      line.all += line.now;
+      line.last += line.now;
+      yield put(gameAction.line({all: line.all, last: line.last}));
+
       yield put(blockAction.rowClear(clearLineArr));
     } else {
-      if (clearLine.combo > 0) {
-        yield put(infoAction.clearCombo());
-        clearLine.combo = 0;
+      if (line.last > 0) {
+        yield put(gameAction.line({last: 0}));
       }
     }
 
-    const nowSpeed = yield select(state => state.info.speed);
+    const nowSpeed = state.game.speed;
 
     // 10줄 클리어 할 때마다 speed 증가
-    if (nowSpeed < 20 && clearLine.all > nowSpeed * 10) {
-      yield put(infoAction.speedUp());
+    if (nowSpeed < 20 && line.all > nowSpeed * 10) {
+      yield put(gameAction.speed(nowSpeed + 1));
     }
 
   }

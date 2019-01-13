@@ -48,7 +48,7 @@ export const Info = props => (
 );
 
 export const HighScore = connect(
-    ({info}) => ({value: info.highScore})
+    ({game}) => ({value: game.score.high})
 )(
     ({value}) => (
         <Div>
@@ -59,7 +59,7 @@ export const HighScore = connect(
 );
 
 export const LastScore = connect(
-    ({info}) => ({value: info.lastScore})
+    ({game}) => ({value: game.score.last})
 )(
     ({value}) => (
         <Div>
@@ -70,7 +70,7 @@ export const LastScore = connect(
 );
 
 export const NowScore = connect(
-    ({info}) => ({value: info.nowScore})
+    ({game}) => ({value: game.score.now})
 )(
     ({value}) => (
         <Div>
@@ -81,7 +81,7 @@ export const NowScore = connect(
 );
 
 export const Speed = connect(
-    ({info}) => ({value: info.speed})
+    ({game}) => ({value: game.speed})
 )(
     ({value}) => (
         <Div>
