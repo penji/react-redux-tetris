@@ -5,7 +5,7 @@ import rootSaga from '../saga/index';
 import Storage from "redux-state-save";
 import storageAvailable from './storageAvailable';
 
-const lastUpdate = '1547361002347';
+const lastUpdate = '1547361002348';
 let storage;
 
 if (storageAvailable('localStorage')) {

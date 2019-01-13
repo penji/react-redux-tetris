@@ -227,7 +227,11 @@ export default function* () {
     scoreState.now += finalScore;
 
     // highScore 갱신 여부 확인
-    if (scoreState.high < scoreState.now) {
+    if (!highScoreUpdated) {
+      highScoreUpdated = scoreState.high < scoreState.now;
+    }
+
+    if (highScoreUpdated) {
       scoreState.high = scoreState.now;
     }
 
