@@ -104,7 +104,7 @@ export default function* () {
         }
       } else if (_race[2] && paused && !fromUser) {
         yield put(gameAction.resumed());
-      } else if (_race[3] && !paused && !fromUser) {
+      } else if (_race[3] && !paused) {
         yield put(gameAction.paused());
       }
     }
