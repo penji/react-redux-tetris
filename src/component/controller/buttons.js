@@ -128,19 +128,16 @@ export const Up = ({ type,
                      pressed,
                      onMouseTouchEvent,
                      inversed
-                   }) => {
-  console.error(`up className = ${pressed ? 'active' : ''}`);
-  return (
-      <UpBtn
-          inversed={inversed}
-          className={pressed ? 'active' : ''}
-          onMouseDown={() => !touch && onMouseTouchEvent(type, true)}
-          onMouseUp={() => !touch && onMouseTouchEvent(type, false)}
-          onTouchStart={() => {touch = true; onMouseTouchEvent(type, true);}}
-          onTouchEnd={() => {touch = true; onMouseTouchEvent(type, false);}}
-      />
-  );
-}
+                   }) => (
+    <UpBtn
+        inversed={inversed}
+        className={pressed ? 'active' : ''}
+        onMouseDown={() => !touch && onMouseTouchEvent(type, true)}
+        onMouseUp={() => !touch && onMouseTouchEvent(type, false)}
+        onTouchStart={() => {touch = true; onMouseTouchEvent(type, true);}}
+        onTouchEnd={() => {touch = true; onMouseTouchEvent(type, false);}}
+    />
+);
 
 export const Down = ({ type,
                        pressed,
