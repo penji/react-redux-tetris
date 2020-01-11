@@ -1,5 +1,4 @@
-import {select, cancel, put, take, call, race, fork} from 'redux-saga/effects';
-import {delay} from 'redux-saga';
+import {select, cancel, put, take, call, race, fork, delay} from 'redux-saga/effects';
 
 import {
   DOWN,
