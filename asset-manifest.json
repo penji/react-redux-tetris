@@ -1,13 +1,22 @@
 {
-  "main.css": "/react-redux-tetris/static/css/main.5af3b3bd.chunk.css",
-  "main.js": "/react-redux-tetris/static/js/main.41fabbe8.chunk.js",
-  "main.js.map": "/react-redux-tetris/static/js/main.41fabbe8.chunk.js.map",
-  "static/js/1.c05c9f07.chunk.js": "/react-redux-tetris/static/js/1.c05c9f07.chunk.js",
-  "static/js/1.c05c9f07.chunk.js.map": "/react-redux-tetris/static/js/1.c05c9f07.chunk.js.map",
-  "runtime~main.js": "/react-redux-tetris/static/js/runtime~main.52becac2.js",
-  "runtime~main.js.map": "/react-redux-tetris/static/js/runtime~main.52becac2.js.map",
-  "static/css/main.5af3b3bd.chunk.css.map": "/react-redux-tetris/static/css/main.5af3b3bd.chunk.css.map",
-  "index.html": "/react-redux-tetris/index.html",
-  "precache-manifest.94a13528dcc62b81aa5d0b3ba2ee8a00.js": "/react-redux-tetris/precache-manifest.94a13528dcc62b81aa5d0b3ba2ee8a00.js",
-  "service-worker.js": "/react-redux-tetris/service-worker.js"
+  "files": {
+    "main.css": "/react-redux-tetris/static/css/main.462b0bd9.chunk.css",
+    "main.js": "/react-redux-tetris/static/js/main.77b4d605.chunk.js",
+    "main.js.map": "/react-redux-tetris/static/js/main.77b4d605.chunk.js.map",
+    "runtime-main.js": "/react-redux-tetris/static/js/runtime-main.2504aae1.js",
+    "runtime-main.js.map": "/react-redux-tetris/static/js/runtime-main.2504aae1.js.map",
+    "static/js/2.e0df1bda.chunk.js": "/react-redux-tetris/static/js/2.e0df1bda.chunk.js",
+    "static/js/2.e0df1bda.chunk.js.map": "/react-redux-tetris/static/js/2.e0df1bda.chunk.js.map",
+    "index.html": "/react-redux-tetris/index.html",
+    "precache-manifest.eb81b0a19cbd333382a2cce7ccaf4f2d.js": "/react-redux-tetris/precache-manifest.eb81b0a19cbd333382a2cce7ccaf4f2d.js",
+    "service-worker.js": "/react-redux-tetris/service-worker.js",
+    "static/css/main.462b0bd9.chunk.css.map": "/react-redux-tetris/static/css/main.462b0bd9.chunk.css.map",
+    "static/js/2.e0df1bda.chunk.js.LICENSE": "/react-redux-tetris/static/js/2.e0df1bda.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2504aae1.js",
+    "static/js/2.e0df1bda.chunk.js",
+    "static/css/main.462b0bd9.chunk.css",
+    "static/js/main.77b4d605.chunk.js"
+  ]
 }
